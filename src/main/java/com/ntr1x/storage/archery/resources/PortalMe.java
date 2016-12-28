@@ -16,12 +16,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.services.IPortalService;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
-import com.ntr1x.storage.core.transport.PageResponse;
+import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
 import com.ntr1x.storage.core.transport.PageableQuery;
 import com.ntr1x.storage.security.model.ISession;
 
@@ -46,16 +47,22 @@ public class PortalMe {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "auth" })
-    public PageResponse<Portal> query(
+    public PortalPageResponse query(
 		@QueryParam("shared") Boolean shared,
     	@BeanParam PageableQuery pageable
     ) {
-        return new PageResponse<>(
-    		portals.query(
-				shared,
-				session.get().getUser().getId(),
-				pageable.toPageRequest()
-			)
+    	
+    	Page<Portal> p = portals.query(
+			shared,
+			session.get().getUser().getId(),
+			pageable.toPageRequest()
+		);
+    	
+        return new PortalPageResponse(
+    		p.getTotalElements(),
+    		p.getNumber(),
+    		p.getSize(),
+    		p.getContent()
 		);
     }
 

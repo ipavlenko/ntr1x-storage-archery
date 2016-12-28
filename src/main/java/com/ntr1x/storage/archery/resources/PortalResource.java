@@ -18,15 +18,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.services.IPortalService;
+import com.ntr1x.storage.archery.services.IPortalService.PortalContent;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
-import com.ntr1x.storage.archery.services.IPortalService.PortalPush;
+import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
 import com.ntr1x.storage.archery.services.IPortalService.PortalUpdate;
 import com.ntr1x.storage.core.model.Resource.ResourceExtra;
-import com.ntr1x.storage.core.transport.PageResponse;
 import com.ntr1x.storage.core.transport.PageableQuery;
 
 import io.swagger.annotations.Api;
@@ -47,15 +48,21 @@ public class PortalResource {
     @Path("/shared")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public PageResponse<Portal> shared(
+    public PortalPageResponse shared(
 		@BeanParam PageableQuery pageable
     ) {
-        return new PageResponse<>(
-    		portals.query(
-				true,
-				null,
-				pageable.toPageRequest()
-			)
+    	
+        Page<Portal> p = portals.query(
+			true,
+			null,
+			pageable.toPageRequest()
+		);
+        
+        return new PortalPageResponse(
+    		p.getTotalElements(),
+    		p.getNumber(),
+    		p.getSize(),
+    		p.getContent()
 		);
     }
     
@@ -63,17 +70,23 @@ public class PortalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///portals:admin" })
-    public PageResponse<Portal> query(
+    public PortalPageResponse query(
 		@QueryParam("shared") Boolean shared,
     	@QueryParam("user") Long user,
 		@BeanParam PageableQuery pageable
     ) {
-        return new PageResponse<>(
-    		portals.query(
-				shared,
-				user,
-				pageable.toPageRequest()
-			)
+    	
+        Page<Portal> p = portals.query(
+			shared,
+			user,
+			pageable.toPageRequest()
+		);
+        
+        return new PortalPageResponse(
+    		p.getTotalElements(),
+    		p.getNumber(),
+    		p.getSize(),
+    		p.getContent()
 		);
     }
 
@@ -103,9 +116,9 @@ public class PortalResource {
     @Transactional
     @RolesAllowed({ "res:///portals/i/{id}:admin" })
     @ResourceExtra
-    public Portal pull(@PathParam("id") long id) {
+    public PortalContent pull(@PathParam("id") long id) {
         
-        return portals.select(id);
+        return portals.pull(id);
     }
 
 	@PUT
@@ -126,9 +139,9 @@ public class PortalResource {
 	@Transactional
 	@ResourceExtra
 	@RolesAllowed({ "res:///portals/i/{id}:admin" })
-	public Portal push(@PathParam("id") long id, PortalPush push) {
+	public PortalContent push(@PathParam("id") long id, PortalContent content) {
 	    
-	    return portals.push(id, push);
+		return portals.push(id, content);
 	}
 	
 	@DELETE

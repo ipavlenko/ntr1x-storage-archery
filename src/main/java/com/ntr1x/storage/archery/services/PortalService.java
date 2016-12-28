@@ -1,10 +1,6 @@
 package com.ntr1x.storage.archery.services;
 
-import java.io.StringWriter;
-
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonWriter;
 import javax.persistence.EntityManager;
 
 import org.springframework.data.domain.Page;
@@ -14,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.repository.PortalRepository;
 import com.ntr1x.storage.core.model.Image;
+import com.ntr1x.storage.core.reflection.ResourceUtils;
 import com.ntr1x.storage.security.model.User;
 import com.ntr1x.storage.security.services.ISecurityService;
 
@@ -45,7 +42,7 @@ public class PortalService implements IPortalService {
 			em.persist(p);
 			em.flush();
 			
-			security.register(p, "portals/i");
+			security.register(p, ResourceUtils.alias(null, "portals/i", p));
 			security.grant(user, p.getAlias(), "admin");
 		}
 		
@@ -94,29 +91,24 @@ public class PortalService implements IPortalService {
 	}
 
 	@Override
-	public Portal push(long id, PortalPush push) {
+	public PortalContent push(long id, PortalContent content) {
 		
 		Portal p = em.find(Portal.class, id); {
 			
-			String content = null;
-			
-			if (push.content != null) {
-				
-				StringWriter stringWriter = new StringWriter();
-				JsonWriter jsonWriter = Json.createWriter(stringWriter);
-				
-				jsonWriter.writeObject(push.content);
-				jsonWriter.close();
-				
-				content = stringWriter.toString();
-			}
-			
-			p.setContent(content);
+			p.setContent(content.content);
 			
 			em.merge(p);
 			em.flush();
 		}
 		
-		return p;
+		return content;
+	}
+	
+	@Override
+	public PortalContent pull(long id) {
+		
+		Portal p = em.find(Portal.class, id);
+		
+		return new PortalContent(p.getContent());
 	}
 }

@@ -12,8 +12,7 @@ public interface PortalRepository extends JpaRepository<Portal, Long> {
 
 	@Query(
         " SELECT p"
-      + " FROM"
-      + "     Portal p"
+      + " FROM Portal p"
       + " WHERE (:shared IS NULL OR p.shared = :shared)"
       + "   AND (:user IS NULL OR p.user.id = :user)"
     )
