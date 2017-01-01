@@ -10,8 +10,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.persistence.annotations.CascadeOnDelete;
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ntr1x.storage.core.model.Resource;
 import com.ntr1x.storage.security.model.User;
 
@@ -46,7 +46,7 @@ public class Portal extends Resource {
 	private String content;
 	
 	@XmlElement
-    @XmlInverseReference(mappedBy = "portals")
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "UserId", nullable = false, updatable = false)
 	private User user;

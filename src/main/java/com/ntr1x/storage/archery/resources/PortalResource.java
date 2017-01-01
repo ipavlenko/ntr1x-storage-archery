@@ -133,6 +133,28 @@ public class PortalResource {
 	}
 	
 	@PUT
+	@Path("/i/{id}/share")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional
+	@RolesAllowed({ "res:///portals:admin" })
+	public Portal share(@PathParam("id") long id) {
+	    
+	    return portals.share(id, true);
+	}
+	
+	@PUT
+	@Path("/i/{id}/unshare")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional
+	@RolesAllowed({ "res:///portals:admin" })
+	public Portal unshare(@PathParam("id") long id) {
+	    
+	    return portals.share(id, false);
+	}
+	
+	@PUT
 	@Path("/i/{id}/push")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

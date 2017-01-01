@@ -2,16 +2,14 @@ package com.ntr1x.storage.archery.services;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ntr1x.storage.archery.model.Portal;
-import com.ntr1x.storage.core.jaxb.JsonStringXmlAdapter;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,6 +19,7 @@ public interface IPortalService {
 
 	Portal create(PortalCreate create);
 	Portal update(long id, PortalUpdate update);
+	Portal share(long id, boolean share);
 	Portal remove(long id);
 
     Page<Portal> query(Boolean shared, Long user, Pageable pageable);
@@ -48,10 +47,9 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalContent {
         
-		@XmlAnyElement
-		@XmlJavaTypeAdapter(value = JsonStringXmlAdapter.class)
+		@XmlElement
 		@ApiModelProperty(dataType = "Object")
-    	public String content;
+    	public JsonNode content;
     }
     
     @XmlRootElement
@@ -63,7 +61,6 @@ public interface IPortalService {
     	public Long proto;
         public long user;
         public Long thumbnail;
-    	public boolean shared;
     }
     
     @XmlRootElement
@@ -73,6 +70,5 @@ public interface IPortalService {
         
     	public String title;
     	public Long thumbnail;
-    	public boolean shared;
     }
 }
