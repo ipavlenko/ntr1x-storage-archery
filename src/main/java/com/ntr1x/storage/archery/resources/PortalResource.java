@@ -1,11 +1,14 @@
 package com.ntr1x.storage.archery.resources;
 
+import java.util.List;
+
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,7 +24,10 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import com.ntr1x.storage.archery.model.Domain;
 import com.ntr1x.storage.archery.model.Portal;
+import com.ntr1x.storage.archery.services.IDomainService;
+import com.ntr1x.storage.archery.services.IDomainService.DomainCreate;
 import com.ntr1x.storage.archery.services.IPortalService;
 import com.ntr1x.storage.archery.services.IPortalService.PortalContent;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
@@ -43,7 +49,10 @@ public class PortalResource {
 
     @Inject
     private IPortalService portals;
-
+    
+    @Inject
+    private IDomainService domains;
+    
     @GET
     @Path("/shared")
     @Produces(MediaType.APPLICATION_JSON)
@@ -174,5 +183,27 @@ public class PortalResource {
     public Portal remove(@PathParam("id") long id) {
         
 	    return portals.remove(id);
+    }
+	
+	@GET
+    @Path("/i/{id}/domains")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
+    public List<Domain> domains(@PathParam("id") long id) {
+        
+        return portals.select(id).getDomains();
+    }
+    
+    @POST
+    @Path("/i/{id}/domains")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
+    public Domain domainsCreate(@PathParam("id") long id, @Valid DomainCreate create) {
+        
+    	create.portal = id;
+    	
+    	return domains.create(create);
     }
 }
