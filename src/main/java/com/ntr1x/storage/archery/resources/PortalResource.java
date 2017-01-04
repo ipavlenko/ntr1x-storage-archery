@@ -104,7 +104,7 @@ public class PortalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///portals:admin" })
-    public Portal create(PortalCreate create) {
+    public Portal create(@Valid PortalCreate create) {
 
         return portals.create(create);
 	}
@@ -136,7 +136,7 @@ public class PortalResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Transactional
 	@RolesAllowed({ "res:///portals/i/{id}:admin" })
-	public Portal update(@PathParam("id") long id, PortalUpdate update) {
+	public Portal update(@PathParam("id") long id, @Valid PortalUpdate update) {
 	    
 	    return portals.update(id, update);
 	}
@@ -179,7 +179,7 @@ public class PortalResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}:admin" })	
     public Portal remove(@PathParam("id") long id) {
         
 	    return portals.remove(id);

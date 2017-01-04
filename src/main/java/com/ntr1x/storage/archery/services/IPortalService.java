@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -57,7 +58,9 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalCreate {
         
+    	@NotBlank
     	public String title;
+    	
     	public Long proto;
         public long user;
         public Long thumbnail;
@@ -68,7 +71,10 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalUpdate {
         
+    	@NotBlank
     	public String title;
+    	
     	public Long thumbnail;
+    	public Boolean shared;
     }
 }

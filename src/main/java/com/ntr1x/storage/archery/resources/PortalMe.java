@@ -7,6 +7,7 @@ import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -71,7 +72,7 @@ public class PortalMe {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "auth" })
-    public Portal create(PortalCreate create) {
+    public Portal create(@Valid PortalCreate create) {
     	
     	create.user = session.get().getUser().getId();
     	

@@ -87,6 +87,8 @@ public class PortalService implements IPortalService {
 			p.setTitle(update.title);
 			p.setThumbnail(thumbnail);
 			
+			if (update.shared != null) p.setShared(update.shared);
+			
 			em.merge(p);
 			em.flush();
 		}

@@ -5,6 +5,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -84,7 +85,7 @@ public class DomainResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///domains:admin" })
-    public Domain create(DomainCreate create) {
+    public Domain create(@Valid DomainCreate create) {
 
         return domains.create(create);
 	}
@@ -95,7 +96,7 @@ public class DomainResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Transactional
 	@RolesAllowed({ "res:///domains/i/{id}:admin" })
-	public Domain update(@PathParam("id") long id, DomainUpdate update) {
+	public Domain update(@PathParam("id") long id, @Valid DomainUpdate update) {
 	    
 	    return domains.update(id, update);
 	}
