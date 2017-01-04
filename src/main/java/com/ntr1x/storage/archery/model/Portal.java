@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlElement;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ntr1x.storage.core.model.Image;
 import com.ntr1x.storage.core.model.Resource;
 import com.ntr1x.storage.security.model.User;
 
@@ -57,7 +58,7 @@ public class Portal extends Resource {
 	@XmlElement
     @ManyToOne
 	@JoinColumn(name = "ThumbnailId", nullable = true, updatable = true)
-	private Resource thumbnail;
+	private Image thumbnail;
 	
 	@ResourceRelation
 	@XmlElement

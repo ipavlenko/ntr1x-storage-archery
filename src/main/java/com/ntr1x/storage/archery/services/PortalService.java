@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotAllowedException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,10 +76,6 @@ public class PortalService implements IPortalService {
 	public Portal update(long id, PortalUpdate update) {
 		
 		Portal p = em.find(Portal.class, id); {
-			
-			if (p.isShared()) {
-				throw new NotAllowedException("Shared portal cannot be updated");
-			}
 			
 			Image thumbnail = update.thumbnail == null ? null : em.find(Image.class, update.thumbnail);
 			
