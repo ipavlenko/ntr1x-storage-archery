@@ -131,7 +131,7 @@ public class PortalService implements IPortalService {
 	}
 
 	@Override
-	public PortalContent push(long id, PortalContent content) {
+	public PortalPush push(long id, PortalPush content) {
 		
 		Portal p = em.find(Portal.class, id); {
 		
@@ -149,11 +149,12 @@ public class PortalService implements IPortalService {
 	}
 	
 	@Override
-	public PortalContent pull(long id) {
+	public PortalPull pull(long id) {
 		
 		Portal p = em.find(Portal.class, id);
 		try {
-			return new PortalContent(mapper.readTree(p.getContent()));
+			String content = p.getContent();
+			return content == null ? null : new PortalPull(p, mapper.readTree(content));
 		} catch (IOException e) {
 			throw new InternalServerErrorException("Cannot parse portal content");
 		}

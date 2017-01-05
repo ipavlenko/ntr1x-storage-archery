@@ -29,9 +29,10 @@ import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.services.IDomainService;
 import com.ntr1x.storage.archery.services.IDomainService.DomainCreate;
 import com.ntr1x.storage.archery.services.IPortalService;
-import com.ntr1x.storage.archery.services.IPortalService.PortalContent;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
+import com.ntr1x.storage.archery.services.IPortalService.PortalPull;
+import com.ntr1x.storage.archery.services.IPortalService.PortalPush;
 import com.ntr1x.storage.archery.services.IPortalService.PortalUpdate;
 import com.ntr1x.storage.core.model.Resource.ResourceExtra;
 import com.ntr1x.storage.core.transport.PageableQuery;
@@ -125,7 +126,7 @@ public class PortalResource {
     @Transactional
     @RolesAllowed({ "res:///portals/i/{id}:admin" })
     @ResourceExtra
-    public PortalContent pull(@PathParam("id") long id) {
+    public PortalPull pull(@PathParam("id") long id) {
         
         return portals.pull(id);
     }
@@ -170,9 +171,9 @@ public class PortalResource {
 	@Transactional
 	@ResourceExtra
 	@RolesAllowed({ "res:///portals/i/{id}:admin" })
-	public PortalContent push(@PathParam("id") long id, PortalContent content) {
+	public PortalPush push(@PathParam("id") long id, PortalPush data) {
 	    
-		return portals.push(id, content);
+		return portals.push(id, data);
 	}
 	
 	@DELETE

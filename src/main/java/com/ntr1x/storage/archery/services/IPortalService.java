@@ -27,8 +27,8 @@ public interface IPortalService {
     
     Portal select(long id);
 
-    PortalContent pull(long id);
-    PortalContent push(long id, PortalContent content);
+    PortalPull pull(long id);
+    PortalPush push(long id, PortalPush content);
     
     @XmlRootElement
     @NoArgsConstructor
@@ -46,8 +46,21 @@ public interface IPortalService {
     @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PortalContent {
+    public static class PortalPush {
         
+		@XmlElement
+		@ApiModelProperty(dataType = "Object")
+    	public JsonNode content;
+    }
+    
+    @XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PortalPull {
+        
+    	@XmlElement
+		public Portal portal;
+    	
 		@XmlElement
 		@ApiModelProperty(dataType = "Object")
     	public JsonNode content;
