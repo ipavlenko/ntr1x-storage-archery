@@ -2,7 +2,6 @@ package com.ntr1x.storage.archery.services;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -43,9 +42,6 @@ public interface IDomainService {
         @NotBlank
     	public String name;
         
-        @NotNull
-    	public Domain.Type type;
-        
         public Action action;
     }
 	
@@ -69,7 +65,7 @@ public interface IDomainService {
         
 		@NotBlank
     	public String name;
-    	public long portal;
+		public long portal;
     }
     
     @XmlRootElement

@@ -102,7 +102,6 @@ public class DomainService implements IDomainService {
                 	d.setPortal(portal);
                     d.setScope(portal.getScope());
                     d.setName(p.name);
-                    d.setType(p.type);
                     
                     em.persist(d);
                     em.flush();
@@ -132,7 +131,6 @@ public class DomainService implements IDomainService {
                             d.setScope(portal.getScope());
                             d.setPortal(portal);
                             d.setName(p.name);
-                            d.setType(p.type);
                             
                             em.persist(d);
                             em.flush();
@@ -148,7 +146,6 @@ public class DomainService implements IDomainService {
                         Domain d = select(portal.getScope(), p.id); {
                             
                             d.setName(p.name);
-                            d.setType(p.type);
                             
                             em.merge(d);
                         }
@@ -160,7 +157,6 @@ public class DomainService implements IDomainService {
                     	Domain d = select(portal.getScope(), p.id); {
                             
                             d.setName(p.name);
-                            d.setType(p.type);
                             
                             em.remove(d);
                         }

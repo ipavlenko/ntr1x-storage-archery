@@ -29,18 +29,10 @@ import lombok.Setter;
 @CascadeOnDelete
 public class Domain extends Resource {
 
-	public enum Type {
-		API,
-		ARCHERY
-	}
-	
 	@XmlElement
     @ManyToOne
     @JoinColumn(name = "PortalId", nullable = false, updatable = false)
     private Portal portal;
-	
-	@Column(name = "Type", nullable = false)
-	private Type type;
 	
 	@Column(name = "Name", nullable = false, unique = true)
 	private String name;
