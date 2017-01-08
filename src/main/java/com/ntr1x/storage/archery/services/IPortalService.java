@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ntr1x.storage.archery.model.Portal;
+import com.ntr1x.storage.security.model.User;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -18,17 +19,17 @@ import lombok.NoArgsConstructor;
 
 public interface IPortalService {
 
-	Portal create(PortalCreate create);
-	Portal update(long id, PortalUpdate update);
-	Portal share(long id, boolean share);
-	Portal remove(long id);
+	Portal create(long scope, PortalCreate create);
+	Portal update(Long scope, long id, PortalUpdate update);
+	Portal share(Long scope, long id, boolean share);
+	Portal remove(Long scope, long id);
 
-    Page<Portal> query(Boolean shared, Long user, Pageable pageable);
+    Page<Portal> query(Long scope, Boolean shared, Long user, Pageable pageable);
     
-    Portal select(long id);
+    Portal select(Long scope, long id);
 
-    PortalPull pull(long id);
-    PortalPush push(long id, PortalPush content);
+    PortalPull pull(Long scope, long id);
+    PortalPush push(Long scope, long id, PortalPush content);
     
     @XmlRootElement
     @NoArgsConstructor
@@ -48,6 +49,22 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalPush {
         
+		@XmlElement
+		@ApiModelProperty(dataType = "Object")
+    	public JsonNode content;
+    }
+    
+    @XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PortalContext {
+        
+    	@XmlElement
+		public User user;
+    	
+    	@XmlElement
+		public Portal portal;
+    	
 		@XmlElement
 		@ApiModelProperty(dataType = "Object")
     	public JsonNode content;
@@ -77,6 +94,9 @@ public interface IPortalService {
     	public Long proto;
         public long user;
         public Long thumbnail;
+        
+        @XmlElement
+        public IDomainService.RelatedDomain[] domains;
     }
     
     @XmlRootElement
@@ -89,5 +109,8 @@ public interface IPortalService {
     	
     	public Long thumbnail;
     	public Boolean shared;
+    	
+    	@XmlElement
+        public IDomainService.RelatedDomain[] domains;
     }
 }

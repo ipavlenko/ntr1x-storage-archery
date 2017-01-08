@@ -4,8 +4,6 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
@@ -24,7 +22,8 @@ import com.ntr1x.storage.archery.services.IDomainService;
 import com.ntr1x.storage.archery.services.IDomainService.DomainCreate;
 import com.ntr1x.storage.archery.services.IDomainService.DomainPageResponse;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.model.ISession;
+import com.ntr1x.storage.security.filters.IUserScope;
+import com.ntr1x.storage.security.filters.IUserPrincipal;
 
 import io.swagger.annotations.Api;
 
@@ -34,15 +33,15 @@ import io.swagger.annotations.Api;
 @PermitAll
 public class DomainMe {
 
-	@PersistenceContext
-    private EntityManager em;
-
-    @Inject
-    private Provider<ISession> session;
-    
     @Inject
     private IDomainService domains;
 
+    @Inject
+    private Provider<IUserPrincipal> principal;
+    
+    @Inject
+    private Provider<IUserScope> scope;
+    
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
@@ -53,7 +52,8 @@ public class DomainMe {
     ) {
     	
     	Page<Domain> p = domains.query(
-			session.get().getUser().getId(),
+			scope.get().getId(),
+			principal.get().getUser().getId(),
 			portal,
 			pageable.toPageRequest()
 		);
@@ -73,6 +73,6 @@ public class DomainMe {
     @RolesAllowed({ "auth" })
     public Domain create(DomainCreate create) {
     	
-        return domains.create(create);
+        return domains.create(scope.get().getId(), create);
 	}
 }

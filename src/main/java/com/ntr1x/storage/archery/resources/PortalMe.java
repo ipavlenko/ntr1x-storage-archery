@@ -25,7 +25,8 @@ import com.ntr1x.storage.archery.services.IPortalService;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.model.ISession;
+import com.ntr1x.storage.security.filters.IUserScope;
+import com.ntr1x.storage.security.filters.IUserPrincipal;
 
 import io.swagger.annotations.Api;
 
@@ -37,12 +38,15 @@ public class PortalMe {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Inject
-    private Provider<ISession> session;
     
     @Inject
     private IPortalService portals;
+    
+    @Inject
+    private Provider<IUserPrincipal> principal;
+    
+    @Inject
+    private Provider<IUserScope> scope;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,8 +58,9 @@ public class PortalMe {
     ) {
     	
     	Page<Portal> p = portals.query(
+			scope.get().getId(),
 			shared,
-			session.get().getUser().getId(),
+			principal.get().getUser().getId(),
 			pageable.toPageRequest()
 		);
     	
@@ -74,8 +79,8 @@ public class PortalMe {
     @RolesAllowed({ "auth" })
     public Portal create(@Valid PortalCreate create) {
     	
-    	create.user = session.get().getUser().getId();
+    	create.user = principal.get().getUser().getId();
     	
-        return portals.create(create);
+        return portals.create(scope.get().getId(), create);
 	}
 }

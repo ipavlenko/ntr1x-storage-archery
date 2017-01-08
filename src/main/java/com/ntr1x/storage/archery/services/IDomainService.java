@@ -2,6 +2,7 @@ package com.ntr1x.storage.archery.services;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -10,22 +11,43 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.ntr1x.storage.archery.model.Domain;
+import com.ntr1x.storage.archery.model.Portal;
+import com.ntr1x.storage.core.model.Action;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 public interface IDomainService {
 
-	Domain create(DomainCreate create);
-	Domain update(long id, DomainUpdate update);
+	Domain create(long scope, DomainCreate create);
+	Domain update(Long scope, long id, DomainUpdate update);
 	
-	Domain select(long id);
+	Domain select(Long scope, long id);
 	
-	Domain select(String name);
+	Domain select(Long scope, String name);
 	
-	Page<Domain> query(Long user, Long portal, Pageable pageable);
+	Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable);
 	
-	Domain remove(long id);
+	Domain remove(Long scope, long id);
+	
+	void createDomains(Portal portal, RelatedDomain[] domains);
+    void updateDomains(Portal portal, RelatedDomain[] domains);
+	
+	@XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RelatedDomain {
+        
+        public Long id;
+        
+        @NotBlank
+    	public String name;
+        
+        @NotNull
+    	public Domain.Type type;
+        
+        public Action action;
+    }
 	
 	@XmlRootElement
     @NoArgsConstructor

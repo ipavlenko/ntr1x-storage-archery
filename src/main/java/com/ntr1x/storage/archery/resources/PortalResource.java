@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -36,6 +37,7 @@ import com.ntr1x.storage.archery.services.IPortalService.PortalPush;
 import com.ntr1x.storage.archery.services.IPortalService.PortalUpdate;
 import com.ntr1x.storage.core.model.Resource.ResourceExtra;
 import com.ntr1x.storage.core.transport.PageableQuery;
+import com.ntr1x.storage.security.filters.IUserScope;
 
 import io.swagger.annotations.Api;
 
@@ -54,6 +56,9 @@ public class PortalResource {
     @Inject
     private IDomainService domains;
     
+    @Inject
+    private Provider<IUserScope> scope;
+    
     @GET
     @Path("/shared")
     @Produces(MediaType.APPLICATION_JSON)
@@ -63,6 +68,7 @@ public class PortalResource {
     ) {
     	
         Page<Portal> p = portals.query(
+    		scope.get().getId(),
 			true,
 			null,
 			pageable.toPageRequest()
@@ -87,6 +93,7 @@ public class PortalResource {
     ) {
     	
         Page<Portal> p = portals.query(
+    		scope.get().getId(),
 			shared,
 			user,
 			pageable.toPageRequest()
@@ -107,7 +114,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals:admin" })
     public Portal create(@Valid PortalCreate create) {
 
-        return portals.create(create);
+        return portals.create(scope.get().getId(), create);
 	}
     
     @GET
@@ -117,7 +124,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}:admin" })
     public Portal select(@PathParam("id") long id) {
         
-        return portals.select(id);
+        return portals.select(scope.get().getId(), id);
     }
     
     @GET
@@ -128,7 +135,7 @@ public class PortalResource {
     @ResourceExtra
     public PortalPull pull(@PathParam("id") long id) {
         
-        return portals.pull(id);
+        return portals.pull(scope.get().getId(), id);
     }
 
 	@PUT
@@ -139,7 +146,7 @@ public class PortalResource {
 	@RolesAllowed({ "res:///portals/i/{id}:admin" })
 	public Portal update(@PathParam("id") long id, @Valid PortalUpdate update) {
 	    
-	    return portals.update(id, update);
+	    return portals.update(scope.get().getId(), id, update);
 	}
 	
 	@PUT
@@ -150,7 +157,7 @@ public class PortalResource {
 	@RolesAllowed({ "res:///portals:admin" })
 	public Portal share(@PathParam("id") long id) {
 	    
-	    return portals.share(id, true);
+	    return portals.share(scope.get().getId(), id, true);
 	}
 	
 	@PUT
@@ -161,7 +168,7 @@ public class PortalResource {
 	@RolesAllowed({ "res:///portals:admin" })
 	public Portal unshare(@PathParam("id") long id) {
 	    
-	    return portals.share(id, false);
+	    return portals.share(scope.get().getId(), id, false);
 	}
 	
 	@PUT
@@ -173,7 +180,7 @@ public class PortalResource {
 	@RolesAllowed({ "res:///portals/i/{id}:admin" })
 	public PortalPush push(@PathParam("id") long id, PortalPush data) {
 	    
-		return portals.push(id, data);
+		return portals.push(scope.get().getId(), id, data);
 	}
 	
 	@DELETE
@@ -183,7 +190,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}:admin" })	
     public Portal remove(@PathParam("id") long id) {
         
-	    return portals.remove(id);
+	    return portals.remove(scope.get().getId(), id);
     }
 	
 	@GET
@@ -193,7 +200,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
     public List<Domain> domains(@PathParam("id") long id) {
         
-        return portals.select(id).getDomains();
+        return portals.select(scope.get().getId(), id).getDomains();
     }
     
     @POST
@@ -205,6 +212,6 @@ public class PortalResource {
         
     	create.portal = id;
     	
-    	return domains.create(create);
+    	return domains.create(scope.get().getId(), create);
     }
 }

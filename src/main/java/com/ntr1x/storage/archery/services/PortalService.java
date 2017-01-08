@@ -19,6 +19,8 @@ import com.ntr1x.storage.core.model.Image;
 import com.ntr1x.storage.core.reflection.ResourceUtils;
 import com.ntr1x.storage.security.model.User;
 import com.ntr1x.storage.security.services.ISecurityService;
+import com.ntr1x.storage.security.services.IUserService;
+import com.ntr1x.storage.uploads.services.IImageService;
 
 @Service
 public class PortalService implements IPortalService {
@@ -30,19 +32,28 @@ public class PortalService implements IPortalService {
 	private PortalRepository portals;
 	
 	@Inject
+	private IUserService users;
+	
+	@Inject
 	private ISecurityService security;
 
+	@Inject
+	private IImageService images;
+	
+	@Inject
+	private IDomainService domains;
+	
 	@Inject
 	private ObjectMapper mapper;
 	
 	@Override
-	public Portal create(PortalCreate create) {
+	public Portal create(long scope, PortalCreate create) {
 		
 		Portal p = new Portal(); {
 			
 			if (create.proto != null) {
 				
-				Portal proto = em.find(Portal.class, create.proto);
+				Portal proto = portals.select(null, create.proto);
 				if (proto == null) {
 					throw new BadRequestException("Unknown proto portal");
 				}
@@ -54,9 +65,10 @@ public class PortalService implements IPortalService {
 				p.setContent(proto.getContent());
 			}
 			
-			User user = em.find(User.class, create.user);
-			Image thumbnail = create.thumbnail == null ? null : em.find(Image.class, create.thumbnail);
+			User user = users.select(scope, create.user);
+			Image thumbnail = create.thumbnail == null ? null : images.select(scope, create.thumbnail);
 			
+			p.setScope(scope);
 			p.setTitle(create.title);
 			p.setShared(false);
 			p.setUser(user);
@@ -67,17 +79,19 @@ public class PortalService implements IPortalService {
 			
 			security.register(p, ResourceUtils.alias(null, "portals/i", p));
 			security.grant(user, p.getAlias(), "admin");
+			
+			domains.createDomains(p, create.domains);
 		}
 		
 		return p;
 	}
 
 	@Override
-	public Portal update(long id, PortalUpdate update) {
+	public Portal update(Long scope, long id, PortalUpdate update) {
 		
-		Portal p = em.find(Portal.class, id); {
+		Portal p = portals.select(scope, id); {
 			
-			Image thumbnail = update.thumbnail == null ? null : em.find(Image.class, update.thumbnail);
+			Image thumbnail = update.thumbnail == null ? null : images.select(scope, update.thumbnail);
 			
 			p.setTitle(update.title);
 			p.setThumbnail(thumbnail);
@@ -86,19 +100,19 @@ public class PortalService implements IPortalService {
 			
 			em.merge(p);
 			em.flush();
+			
+			domains.updateDomains(p, update.domains);
 		}
 		
 		return p;
 	}
 	
 	@Override
-	public Portal share(long id, boolean share) {
+	public Portal share(Long scope, long id, boolean share) {
 		
-		Portal p = em.find(Portal.class, id); {
+		Portal p = portals.select(scope, id); {
 			
 			p.setShared(share);
-			
-			
 			
 			em.merge(p);
 			em.flush();
@@ -108,32 +122,33 @@ public class PortalService implements IPortalService {
 	}
 
 	@Override
-	public Portal remove(long id) {
+	public Portal remove(Long scope, long id) {
 		
-		Portal p = em.find(Portal.class, id);
+		Portal p = portals.select(scope, id); {
 		
-		em.remove(p);
-		em.flush();
+			em.remove(p);
+			em.flush();
+		}
 		
 		return p;
 	}
 
 	@Override
-	public Page<Portal> query(Boolean shared, Long user, Pageable pageable) {
+	public Page<Portal> query(Long scope, Boolean shared, Long user, Pageable pageable) {
 		
-		return portals.query(shared, user, pageable);
+		return portals.query(scope, shared, user, pageable);
 	}
 
 	@Override
-	public Portal select(long id) {
+	public Portal select(Long scope, long id) {
 		
-		return em.find(Portal.class, id);
+		return portals.select(scope, id);
 	}
 
 	@Override
-	public PortalPush push(long id, PortalPush content) {
+	public PortalPush push(Long scope, long id, PortalPush content) {
 		
-		Portal p = em.find(Portal.class, id); {
+		Portal p = portals.select(scope, id); {
 		
 			try {
 				p.setContent(mapper.writeValueAsString(content.content));
@@ -149,12 +164,15 @@ public class PortalService implements IPortalService {
 	}
 	
 	@Override
-	public PortalPull pull(long id) {
+	public PortalPull pull(Long scope, long id) {
 		
-		Portal p = em.find(Portal.class, id);
+		Portal p = portals.select(scope, id);
 		try {
 			String content = p.getContent();
-			return content == null ? null : new PortalPull(p, mapper.readTree(content));
+			return new PortalPull(
+				p,
+				content == null ? null : mapper.readTree(content)
+			);
 		} catch (IOException e) {
 			throw new InternalServerErrorException("Cannot parse portal content");
 		}

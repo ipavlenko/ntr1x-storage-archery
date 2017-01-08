@@ -13,14 +13,30 @@ public interface DomainRepository extends JpaRepository<Domain, Long> {
 	@Query(
         " SELECT d"
       + " FROM Domain d"
-      + " WHERE (:user IS NULL OR d.portal.user.id = :user)"
+      + " WHERE (:scope IS NULL OR d.scope = :scope)"
+      + "	AND (:user IS NULL OR d.portal.user.id = :user)"
       + "   AND (:portal IS NULL OR d.portal.id = :portal)"
     )
     Page<Domain> query(
+		@Param("scope") Long scope,
 		@Param("user") Long user,
 		@Param("portal") Long portal,
 		Pageable pageable
 	);
 
-	Domain findOneByName(String name);
+	@Query(
+        " SELECT d"
+      + " FROM Domain d"
+      + " WHERE (:scope IS NULL OR d.scope = :scope)"
+      + "	AND (d.id = :id)"
+    )
+	Domain select(@Param("scope") Long scope, @Param("id") long id);
+	
+	@Query(
+        " SELECT d"
+      + " FROM Domain d"
+      + " WHERE (:scope IS NULL OR d.scope = :scope)"
+      + "	AND (d.name = :name)"
+    )
+	Domain select(@Param("scope") Long scope, @Param("name") String name);
 }
