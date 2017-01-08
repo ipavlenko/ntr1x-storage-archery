@@ -65,6 +65,6 @@ public class PortalScopeFilter implements ContainerRequestFilter {
     	
     	Domain domain = domains.select(null, host);
     	
-        return new UserScope(domain == null ? -1 : domain.getPortal().getScope());
+        return new UserScope(domain == null ? -1 : domain.getPortal().getId());
 	}
 }
