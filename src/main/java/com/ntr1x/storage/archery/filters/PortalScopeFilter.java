@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.ntr1x.storage.archery.model.Domain;
 import com.ntr1x.storage.archery.services.IDomainService;
-import com.ntr1x.storage.security.filters.IUserScope;
-import com.ntr1x.storage.security.filters.UserScope;
+import com.ntr1x.storage.core.filters.IUserScope;
+import com.ntr1x.storage.core.filters.UserScope;
 
 import io.swagger.models.HttpMethod;
 

@@ -35,9 +35,9 @@ import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPull;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPush;
 import com.ntr1x.storage.archery.services.IPortalService.PortalUpdate;
+import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.model.Resource.ResourceExtra;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.filters.IUserScope;
 
 import io.swagger.annotations.Api;
 

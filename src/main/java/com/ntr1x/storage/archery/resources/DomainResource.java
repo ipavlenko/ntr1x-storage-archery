@@ -26,8 +26,8 @@ import com.ntr1x.storage.archery.services.IDomainService;
 import com.ntr1x.storage.archery.services.IDomainService.DomainCreate;
 import com.ntr1x.storage.archery.services.IDomainService.DomainPageResponse;
 import com.ntr1x.storage.archery.services.IDomainService.DomainUpdate;
+import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.filters.IUserScope;
 
 import io.swagger.annotations.Api;
 

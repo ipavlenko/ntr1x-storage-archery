@@ -5,6 +5,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,8 +22,8 @@ import com.ntr1x.storage.archery.model.Domain;
 import com.ntr1x.storage.archery.services.IDomainService;
 import com.ntr1x.storage.archery.services.IDomainService.DomainCreate;
 import com.ntr1x.storage.archery.services.IDomainService.DomainPageResponse;
+import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.filters.IUserScope;
 import com.ntr1x.storage.security.filters.IUserPrincipal;
 
 import io.swagger.annotations.Api;
@@ -71,7 +72,7 @@ public class DomainMe {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "auth" })
-    public Domain create(DomainCreate create) {
+    public Domain create(@Valid DomainCreate create) {
     	
         return domains.create(scope.get().getId(), create);
 	}

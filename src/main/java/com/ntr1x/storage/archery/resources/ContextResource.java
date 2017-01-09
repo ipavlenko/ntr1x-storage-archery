@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.ntr1x.storage.archery.services.IPortalService;
 import com.ntr1x.storage.archery.services.IPortalService.PortalContext;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPull;
-import com.ntr1x.storage.security.filters.IUserScope;
+import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.security.filters.IUserPrincipal;
 
 import io.swagger.annotations.Api;

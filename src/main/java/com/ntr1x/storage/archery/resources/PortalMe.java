@@ -24,8 +24,8 @@ import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.services.IPortalService;
 import com.ntr1x.storage.archery.services.IPortalService.PortalCreate;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
+import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.transport.PageableQuery;
-import com.ntr1x.storage.security.filters.IUserScope;
 import com.ntr1x.storage.security.filters.IUserPrincipal;
 
 import io.swagger.annotations.Api;
