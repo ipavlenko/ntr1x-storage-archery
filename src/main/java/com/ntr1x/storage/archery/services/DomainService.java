@@ -70,7 +70,7 @@ public class DomainService implements IDomainService {
 			em.flush();
 			
 			security.register(d, ResourceUtils.alias(null, "domains/i", d));
-			security.grant(portal.getUser(), d.getAlias(), "admin");
+			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
 		}
 		
 		return d;
@@ -107,7 +107,7 @@ public class DomainService implements IDomainService {
                     em.flush();
                     
                     security.register(d, ResourceUtils.alias(null, "domains/i", d));
-        			security.grant(portal.getUser(), d.getAlias(), "admin");
+        			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
                 }
             }
             
@@ -136,7 +136,7 @@ public class DomainService implements IDomainService {
                             em.flush();
                             
                             security.register(d, ResourceUtils.alias(null, "domains/i", d));
-                			security.grant(portal.getUser(), d.getAlias(), "admin");
+                			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
                         }
                     	
                         break;

@@ -113,4 +113,14 @@ public interface IPortalService {
     	@XmlElement
         public IDomainService.RelatedDomain[] domains;
     }
+    
+    @XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PortalRootAccount {
+    	
+    	public String name;
+        public String email;
+        public String password;
+    }
 }

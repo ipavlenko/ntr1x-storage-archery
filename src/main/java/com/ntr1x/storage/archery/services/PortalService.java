@@ -66,6 +66,7 @@ public class PortalService implements IPortalService {
 			}
 			
 			User user = users.select(scope, create.user);
+			
 			Image thumbnail = create.thumbnail == null ? null : images.select(scope, create.thumbnail);
 			
 			p.setScope(scope);
@@ -78,7 +79,8 @@ public class PortalService implements IPortalService {
 			em.flush();
 			
 			security.register(p, ResourceUtils.alias(null, "portals/i", p));
-			security.grant(user, p.getAlias(), "admin");
+			security.grant(scope, user, p.getAlias(), "admin");
+			security.grant(p.getId(), user, "/", "admin");
 			
 			domains.createDomains(p, create.domains);
 		}
