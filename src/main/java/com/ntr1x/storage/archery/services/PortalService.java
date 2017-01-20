@@ -1,6 +1,7 @@
 package com.ntr1x.storage.archery.services;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,7 +17,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.repository.PortalRepository;
 import com.ntr1x.storage.core.model.Image;
+import com.ntr1x.storage.core.model.Param;
 import com.ntr1x.storage.core.reflection.ResourceUtils;
+import com.ntr1x.storage.core.services.IParamService;
 import com.ntr1x.storage.security.model.User;
 import com.ntr1x.storage.security.services.ISecurityService;
 import com.ntr1x.storage.security.services.IUserService;
@@ -42,6 +45,12 @@ public class PortalService implements IPortalService {
 	
 	@Inject
 	private IDomainService domains;
+	
+	@Inject
+	private IParamService params;
+	
+	@Inject
+	private ITemplateService templates;
 	
 	@Inject
 	private ObjectMapper mapper;
@@ -83,6 +92,10 @@ public class PortalService implements IPortalService {
 			security.grant(p.getId(), user, "/", "admin");
 			
 			domains.createDomains(p, create.domains);
+			
+			params.createParams(p, create.params);
+			
+			templates.createTemplates(p, create.templates);
 		}
 		
 		return p;
@@ -104,6 +117,10 @@ public class PortalService implements IPortalService {
 			em.flush();
 			
 			domains.updateDomains(p, update.domains);
+			
+			params.updateParams(p, update.params);
+			
+			templates.updateTemplates(p, update.templates);
 		}
 		
 		return p;
@@ -145,6 +162,30 @@ public class PortalService implements IPortalService {
 	public Portal select(Long scope, long id) {
 		
 		return portals.select(scope, id);
+	}
+	
+	@Override
+	public Properties properties(Long scope, long id, String type) {
+		
+		Properties properties = new Properties();
+		for (Param p : params.list(scope, id, Portal.ParamType.MAIL.name())) {
+			properties.put(p.getName(), p.getValue());
+		}
+		return properties;
+	}
+	
+	@Override
+	public PortalDetails details(Long scope, long id) {
+		
+		Portal portal = portals.select(scope, id);
+		
+		return new PortalDetails(
+			portal,
+			params.list(scope, id, Portal.ParamType.META.name()),
+			params.list(scope, id, Portal.ParamType.MAIL.name()),
+			params.list(scope, id, Portal.ParamType.MAIL.name()),
+			templates.query(scope, id, null).getContent()
+		);
 	}
 
 	@Override

@@ -37,6 +37,12 @@ import lombok.Setter;
 @CascadeOnDelete
 public class Portal extends Resource {
 
+	public enum ParamType {
+		META,
+		MAIL,
+		ROUTE
+	}
+
 	@Column(name = "Title", nullable = false)
 	private String title;
 	

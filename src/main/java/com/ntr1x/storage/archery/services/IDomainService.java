@@ -22,7 +22,6 @@ public interface IDomainService {
 	Domain update(Long scope, long id, DomainUpdate update);
 	
 	Domain select(Long scope, long id);
-	
 	Domain select(Long scope, String name);
 	
 	Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable);
@@ -31,7 +30,7 @@ public interface IDomainService {
 	
 	void createDomains(Portal portal, RelatedDomain[] domains);
     void updateDomains(Portal portal, RelatedDomain[] domains);
-	
+    
 	@XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor

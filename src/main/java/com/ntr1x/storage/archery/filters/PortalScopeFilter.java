@@ -15,9 +15,14 @@ import javax.ws.rs.ext.Provider;
 import org.springframework.stereotype.Component;
 
 import com.ntr1x.storage.archery.model.Domain;
+import com.ntr1x.storage.archery.model.Portal;
+import com.ntr1x.storage.archery.model.Template;
 import com.ntr1x.storage.archery.services.IDomainService;
+import com.ntr1x.storage.archery.services.ITemplateService;
 import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.filters.UserScope;
+import com.ntr1x.storage.core.services.IMailService;
+import com.ntr1x.storage.core.services.IParamService;
 
 import io.swagger.models.HttpMethod;
 
@@ -32,6 +37,12 @@ public class PortalScopeFilter implements ContainerRequestFilter {
 	
 	@Inject
 	private IDomainService domains;
+	
+	@Inject
+	private ITemplateService templates;
+	
+	@Inject
+	private IParamService params;
 	
 	@Override
 	@Transactional
@@ -65,6 +76,23 @@ public class PortalScopeFilter implements ContainerRequestFilter {
     	
     	Domain domain = domains.select(null, host);
     	
-        return new UserScope(domain == null ? -1 : domain.getPortal().getId());
+    	long id = domain.getPortal().getId();
+    	long scope = domain.getPortal().getScope();
+    	
+        return new UserScope(scope)
+        	.with(
+    			IMailService.MailScope.class,
+        		new IMailService.MailScope(
+	    			(name) -> {
+	    				Template t = templates.select(scope, id, name);
+	    				return new IMailService.Template(
+    						t.getSender(),
+							t.getSubject(),
+							t.getContent()
+						);
+	    			},
+	    			() -> params.load(scope, id, Portal.ParamType.MAIL.name())
+				)
+    		);
 	}
 }

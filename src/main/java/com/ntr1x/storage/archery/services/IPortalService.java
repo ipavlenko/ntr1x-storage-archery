@@ -1,6 +1,7 @@
 package com.ntr1x.storage.archery.services;
 
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Pageable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ntr1x.storage.archery.model.Portal;
+import com.ntr1x.storage.archery.model.Template;
+import com.ntr1x.storage.core.model.Param;
+import com.ntr1x.storage.core.services.IParamService;
 import com.ntr1x.storage.security.model.User;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -27,6 +31,8 @@ public interface IPortalService {
     Page<Portal> query(Long scope, Boolean shared, Long user, Pageable pageable);
     
     Portal select(Long scope, long id);
+    PortalDetails details(Long scope, long id);
+	Properties properties(Long scope, long id, String type);
 
     PortalPull pull(Long scope, long id);
     PortalPush push(Long scope, long id, PortalPush content);
@@ -73,6 +79,26 @@ public interface IPortalService {
     @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class PortalDetails {
+        
+        public Portal portal;
+        
+        @XmlElement
+        public List<Param> meta;
+        
+        @XmlElement
+        public List<Param> mail;
+        
+        @XmlElement
+        public List<Param> routes;
+        
+        @XmlElement
+        public List<Template> templates;
+    }
+    
+    @XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PortalPull {
         
     	@XmlElement
@@ -97,6 +123,12 @@ public interface IPortalService {
         
         @XmlElement
         public IDomainService.RelatedDomain[] domains;
+        
+        @XmlElement
+    	public IParamService.RelatedParam[] params;
+    	
+    	@XmlElement
+    	public ITemplateService.RelatedTemplate[] templates;
     }
     
     @XmlRootElement
@@ -112,6 +144,12 @@ public interface IPortalService {
     	
     	@XmlElement
         public IDomainService.RelatedDomain[] domains;
+    	
+    	@XmlElement
+    	public IParamService.RelatedParam[] params;
+    	
+    	@XmlElement
+    	public ITemplateService.RelatedTemplate[] templates;
     }
     
     @XmlRootElement
