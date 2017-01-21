@@ -14,10 +14,12 @@ public interface TemplateRepository extends JpaRepository<Template, Long> {
         " SELECT t"
       + " FROM Template t"
       + " WHERE (:scope IS NULL OR t.scope = :scope)"
+      + "	AND (:user IS NULL OR t.portal.user.id = :user)"
       + "	AND (t.portal.id = :portal)"
     )
     Page<Template> query(
 		@Param("scope") Long scope,
+		@Param("user") Long user,
 		@Param("portal") long portal,
 		Pageable pageable
 	);

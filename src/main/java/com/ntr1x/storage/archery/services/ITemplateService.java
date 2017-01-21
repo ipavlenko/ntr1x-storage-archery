@@ -23,7 +23,7 @@ public interface ITemplateService {
 	Template select(Long scope, long id);
 	Template select(Long scope, long resource, String name);
 	
-	Page<Template> query(Long scope, Long relate, Pageable pageable);
+	Page<Template> query(Long scope, Long user, Long portal, Pageable pageable);
 	
 	Template remove(Long scope, long id);
 	

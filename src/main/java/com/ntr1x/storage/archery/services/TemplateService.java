@@ -31,9 +31,9 @@ public class TemplateService implements ITemplateService {
 	
 	
 	@Override
-	public Page<Template> query(Long scope, Long relate, Pageable pageable) {
+	public Page<Template> query(Long scope, Long user, Long portal, Pageable pageable) {
 		
-		return templates.query(scope, relate, pageable);
+		return templates.query(scope, user, portal, pageable);
 	}
 	
 	@Override

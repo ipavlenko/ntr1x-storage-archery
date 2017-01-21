@@ -183,8 +183,8 @@ public class PortalService implements IPortalService {
 			portal,
 			params.list(scope, id, Portal.ParamType.META.name()),
 			params.list(scope, id, Portal.ParamType.MAIL.name()),
-			params.list(scope, id, Portal.ParamType.MAIL.name()),
-			templates.query(scope, id, null).getContent()
+			params.list(scope, id, Portal.ParamType.ROUTE.name()),
+			templates.query(scope, null, id, null).getContent()
 		);
 	}
 
