@@ -36,10 +36,8 @@ import com.ntr1x.storage.archery.services.IPortalService.PortalPageResponse;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPull;
 import com.ntr1x.storage.archery.services.IPortalService.PortalPush;
 import com.ntr1x.storage.archery.services.IPortalService.PortalUpdate;
-import com.ntr1x.storage.archery.services.ITemplateService;
 import com.ntr1x.storage.core.filters.IUserScope;
 import com.ntr1x.storage.core.model.Resource.ResourceExtra;
-import com.ntr1x.storage.core.services.IParamService;
 import com.ntr1x.storage.core.transport.PageableQuery;
 
 import io.swagger.annotations.Api;
@@ -61,12 +59,6 @@ public class PortalResource {
     
     @Inject
     private Provider<IUserScope> scope;
-    
-    @Inject
-	private IParamService params;
-	
-	@Inject
-	private ITemplateService templates;
     
     @GET
     @Path("/shared")
@@ -143,20 +135,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///domains/i/{id}:admin" })
     public PortalDetails details(@PathParam("id") long id) {
         
-    	Portal p = portals.select(scope.get().getId(), id);
-        
-        return new PortalDetails(
-    		p,
-    		params.list(p.getScope(), p.getId(), Portal.ParamType.META.name()),
-    		params.list(p.getScope(), p.getId(), Portal.ParamType.MAIL.name()),
-    		params.list(p.getScope(), p.getId(), Portal.ParamType.ROUTE.name()),
-    		templates.query(
-				p.getScope(),
-				null,
-				p.getId(),
-				null
-			).getContent()
-    	);
+    	return portals.details(scope.get().getId(), id);
     }
     
     @GET
@@ -232,7 +211,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
     public List<Domain> domains(@PathParam("id") long id) {
         
-        return portals.select(scope.get().getId(), id).getDomains();
+		return domains.query(scope.get().getId(), null, id, null).getContent();
     }
     
     @POST

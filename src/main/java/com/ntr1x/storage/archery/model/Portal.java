@@ -1,13 +1,10 @@
 package com.ntr1x.storage.archery.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
@@ -65,11 +62,4 @@ public class Portal extends Resource {
     @ManyToOne
 	@JoinColumn(name = "ThumbnailId", nullable = true, updatable = true)
 	private Image thumbnail;
-	
-	@ResourceRelation
-	@XmlElement
-	@OneToMany(mappedBy = "portal")
-	@CascadeOnDelete
-	@ApiModelProperty(hidden = true)
-	private List<Domain> domains;
 }

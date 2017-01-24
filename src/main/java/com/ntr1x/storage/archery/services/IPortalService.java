@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.ntr1x.storage.archery.model.Domain;
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.model.Template;
 import com.ntr1x.storage.core.model.Param;
@@ -94,6 +95,9 @@ public interface IPortalService {
         
         @XmlElement
         public List<Template> templates;
+        
+        @XmlElement
+        public List<Domain> domains;
     }
     
     @XmlRootElement

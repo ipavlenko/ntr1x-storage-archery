@@ -60,6 +60,7 @@ public class PortalScopeFilter implements ContainerRequestFilter {
 	private UserScope setupScope(ContainerRequestContext rc) {
 		
 		String client = rc.getHeaderString("X-Client-Host");
+		String proto = rc.getHeaderString("X-Client-Proto");
 		String referer = rc.getHeaderString("Referer");
 		
 		String host = client;
@@ -83,6 +84,9 @@ public class PortalScopeFilter implements ContainerRequestFilter {
         	.with(
     			IMailService.MailScope.class,
         		new IMailService.MailScope(
+        			proto == null ? "http" : proto,
+        			host,
+        			domain.getPortal().getTitle(),
 	    			(name) -> {
 	    				Template t = templates.select(scope, id, name);
 	    				return new IMailService.Template(
