@@ -132,7 +132,7 @@ public class PortalResource {
     @Path("/i/{id}/details")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///domains/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}:admin" })
     public PortalDetails details(@PathParam("id") long id) {
         
     	return portals.details(scope.get().getId(), id);

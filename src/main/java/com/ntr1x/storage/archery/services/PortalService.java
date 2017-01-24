@@ -20,6 +20,9 @@ import com.ntr1x.storage.core.model.Image;
 import com.ntr1x.storage.core.model.Param;
 import com.ntr1x.storage.core.reflection.ResourceUtils;
 import com.ntr1x.storage.core.services.IParamService;
+import com.ntr1x.storage.core.services.IRendererService;
+import com.ntr1x.storage.core.services.ISerializationService;
+import com.ntr1x.storage.core.utils.ResourceLoader;
 import com.ntr1x.storage.security.model.User;
 import com.ntr1x.storage.security.services.ISecurityService;
 import com.ntr1x.storage.security.services.IUserService;
@@ -55,10 +58,33 @@ public class PortalService implements IPortalService {
 	@Inject
 	private ObjectMapper mapper;
 	
+	@Inject
+	private IRendererService renderer;
+	
+	@Inject
+	private ISerializationService serialization;
+	
 	@Override
 	public Portal create(long scope, PortalCreate create) {
 		
 		Portal p = new Portal(); {
+			
+			PortalCreate template = serialization.parseJSONNodeJackson(
+				PortalCreate.class,
+				serialization.readJSONNodeJackson(
+					renderer.renderer("/default-portal.json")
+						.with("resources", ResourceLoader.class)
+						.render(this.getClass().getResource("/default-portal.json"))
+				)
+			);
+			
+			if (create.templates == null) {
+				create.templates = template.templates;
+			}
+			
+			if (create.params == null) {
+				create.params = template.params;
+			}
 			
 			if (create.proto != null) {
 				

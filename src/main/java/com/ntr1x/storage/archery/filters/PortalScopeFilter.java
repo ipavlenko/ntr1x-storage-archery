@@ -78,7 +78,7 @@ public class PortalScopeFilter implements ContainerRequestFilter {
     	Domain domain = domains.select(null, host);
     	
     	long id = domain.getPortal().getId();
-    	long scope = domain.getPortal().getScope();
+    	long scope = domain.getPortal().getId();
     	
         return new UserScope(scope)
         	.with(
@@ -88,14 +88,14 @@ public class PortalScopeFilter implements ContainerRequestFilter {
         			host,
         			domain.getPortal().getTitle(),
 	    			(name) -> {
-	    				Template t = templates.select(scope, id, name);
+	    				Template t = templates.select(null, id, name);
 	    				return new IMailService.Template(
     						t.getSender(),
 							t.getSubject(),
 							t.getContent()
 						);
 	    			},
-	    			() -> params.load(scope, id, Portal.ParamType.MAIL.name())
+	    			() -> params.load(null, id, Portal.ParamType.MAIL.name())
 				)
     		);
 	}

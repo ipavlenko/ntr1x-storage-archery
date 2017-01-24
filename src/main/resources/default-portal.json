@@ -1,0 +1,47 @@
+{
+	"params": [
+		{ "type": "MAIL", "name": "mail.host", "value": "smtp.mail.ru" },
+		{ "type": "MAIL", "name": "mail.port", "value": 465 },
+		{ "type": "MAIL", "name": "mail.username", "value": "" },
+		{ "type": "MAIL", "name": "mail.password", "value": "" },
+		{ "type": "MAIL", "name": "mail.protocol", "value": "smtp" },
+		{ "type": "MAIL", "name": "mail.properties.mail.debug", "value": true },
+		{ "type": "MAIL", "name": "mail.properties.mail.transport.protocol", "value": "smtp" },
+		{ "type": "MAIL", "name": "mail.properties.mail.smtp.auth", "value": true },
+		{ "type": "MAIL", "name": "mail.properties.mail.smtp.starttls.enable", "value": true },
+		{ "type": "MAIL", "name": "mail.properties.mail.smtp.socketFactory.class", "value": "javax.net.ssl.SSLSocketFactory" },
+		{ "type": "MAIL", "name": "mail.properties.mail.smtp.socketFactory.port", "value": 465 },
+		
+		{ "type": "META", "name": "meta.description", "value": "Demo Portal" },
+		
+		{ "type": "ROUTE", "name": "route.passwd.confirmed", "value": "/" },
+		{ "type": "ROUTE", "name": "route.email.confirmed", "value": "/" },
+		{ "type": "ROUTE", "name": "route.recover.confirmed", "value": "/passwd" }
+	],
+	"templates": [
+		{
+			"name": "signup",
+			"sender": "",
+			"subject": "Signup confirmation",
+			"content": "$resources.string($resources.content('/templates/mail/signup.vm'))"
+		},
+		{
+			"name": "email",
+			"sender": "",
+			"subject": "Email confirmation",
+			"content": "$resources.string($resources.content('/templates/mail/email.vm'))"
+		},
+		{
+			"name": "recover",
+			"sender": "",
+			"subject": "Password recovery",
+			"content": "$resources.string($resources.content('/templates/mail/recover.vm'))"
+		},
+		{
+			"name": "passwd",
+			"sender": "",
+			"subject": "Password updated",
+			"content": "$resources.string($resources.content('/templates/mail/passwd.vm'))"
+		}
+	]
+}
