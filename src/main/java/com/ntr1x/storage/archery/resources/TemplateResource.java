@@ -32,7 +32,7 @@ import com.ntr1x.storage.core.transport.PageableQuery;
 import io.swagger.annotations.Api;
 
 @Api("Resources")
-@Path("templates")
+@Path("/archery/templates")
 @Component
 @PermitAll
 public class TemplateResource {

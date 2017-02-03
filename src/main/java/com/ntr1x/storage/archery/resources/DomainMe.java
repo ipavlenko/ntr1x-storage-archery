@@ -30,7 +30,7 @@ import io.swagger.annotations.Api;
 
 @Api("Me")
 @Component
-@Path("/me/domains")
+@Path("/me/archery/domains")
 @PermitAll
 public class DomainMe {
 

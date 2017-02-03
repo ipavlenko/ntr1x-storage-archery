@@ -44,7 +44,7 @@ import io.swagger.annotations.Api;
 
 @Api("Archery")
 @Component
-@Path("/portals")
+@Path("/archery/portals")
 @PermitAll
 public class PortalResource {
 

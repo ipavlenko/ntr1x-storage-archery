@@ -32,7 +32,7 @@ import io.swagger.annotations.Api;
 
 @Api("Me")
 @Component
-@Path("/me/portals")
+@Path("/me/archery/portals")
 @PermitAll
 public class PortalMe {
 

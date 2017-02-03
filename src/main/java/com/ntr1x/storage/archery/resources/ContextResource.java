@@ -22,7 +22,7 @@ import io.swagger.annotations.Api;
 
 @Api("Archery")
 @Component
-@Path("/context")
+@Path("/archery/context")
 @PermitAll
 public class ContextResource {
 	

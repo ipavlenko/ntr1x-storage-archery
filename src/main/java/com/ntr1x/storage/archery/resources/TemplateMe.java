@@ -30,7 +30,7 @@ import io.swagger.annotations.Api;
 
 @Api("Me")
 @Component
-@Path("/me/templates")
+@Path("/me/archery/templates")
 @PermitAll
 public class TemplateMe {
 
