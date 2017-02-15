@@ -77,6 +77,8 @@ public class PortalScopeFilter implements ContainerRequestFilter {
     	
     	Domain domain = domains.select(null, host);
     	
+    	if (domain == null) return null;
+    	
     	long id = domain.getPortal().getId();
     	long scope = domain.getPortal().getId();
     	

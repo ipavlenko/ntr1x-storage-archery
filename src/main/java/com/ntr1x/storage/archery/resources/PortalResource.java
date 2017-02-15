@@ -122,7 +122,6 @@ public class PortalResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
     public Portal select(@PathParam("id") long id) {
         
         return portals.select(scope.get().getId(), id);
