@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -69,7 +70,7 @@ public class PortalResource {
     ) {
     	
         Page<Portal> p = portals.query(
-    		scope.get().getId(),
+    		null,
 			true,
 			null,
 			pageable.toPageRequest()
@@ -81,6 +82,21 @@ public class PortalResource {
     		p.getSize(),
     		p.getContent()
 		);
+    }
+    
+    @GET
+    @Path("/shared/i/{id}/pull")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @ResourceExtra
+    public PortalPull sharedPull(@PathParam("id") long id) {
+        
+    	Portal p = portals.select(null, id);
+    	if (!p.isShared()) {
+    		throw new ForbiddenException();
+    	}
+    	
+    	return portals.pull(null, id);
     }
     
     @GET

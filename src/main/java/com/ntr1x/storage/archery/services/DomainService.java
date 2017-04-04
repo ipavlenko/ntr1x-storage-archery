@@ -1,5 +1,7 @@
 package com.ntr1x.storage.archery.services;
 
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -101,7 +103,7 @@ public class DomainService implements IDomainService {
                     
                 	d.setPortal(portal);
                     d.setScope(portal.getScope());
-                    d.setName(p.name);
+                    d.setName(p.name.replaceAll(Pattern.quote("#"), "" + portal.getId()));
                     
                     em.persist(d);
                     em.flush();
