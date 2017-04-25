@@ -18,20 +18,20 @@ import lombok.NoArgsConstructor;
 
 public interface IDomainService {
 
-	Domain create(long scope, DomainCreate create);
-	Domain update(Long scope, long id, DomainUpdate update);
-	
-	Domain select(Long scope, long id);
-	Domain select(Long scope, String name);
-	
-	Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable);
-	
-	Domain remove(Long scope, long id);
-	
-	void createDomains(Portal portal, RelatedDomain[] domains);
+    Domain create(long scope, DomainCreate create);
+    Domain update(Long scope, long id, DomainUpdate update);
+    
+    Domain select(Long scope, long id);
+    Domain select(Long scope, String name);
+    
+    Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable);
+    
+    Domain remove(Long scope, long id);
+    
+    void createDomains(Portal portal, RelatedDomain[] domains);
     void updateDomains(Portal portal, RelatedDomain[] domains);
     
-	@XmlRootElement
+    @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RelatedDomain {
@@ -39,40 +39,40 @@ public interface IDomainService {
         public Long id;
         
         @NotBlank
-    	public String name;
+        public String name;
         
         public Action action;
     }
-	
-	@XmlRootElement
+    
+    @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DomainPageResponse {
 
-    	public long count;
+        public long count;
         public int page;
         public int size;
 
         @XmlElement
         public List<Domain> content;
-	}
-	
-	@XmlRootElement
+    }
+    
+    @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DomainCreate {
         
-		@NotBlank
-    	public String name;
-		public long portal;
+        @NotBlank
+        public String name;
+        public long portal;
     }
     
     @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DomainUpdate {
-    	
-    	@NotBlank
-    	public String name;
+        
+        @NotBlank
+        public String name;
     }
 }

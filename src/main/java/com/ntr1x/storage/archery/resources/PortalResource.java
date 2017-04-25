@@ -66,22 +66,22 @@ public class PortalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public PortalPageResponse shared(
-		@BeanParam PageableQuery pageable
+        @BeanParam PageableQuery pageable
     ) {
-    	
+        
         Page<Portal> p = portals.query(
-    		null,
-			true,
-			null,
-			pageable.toPageRequest()
-		);
+            null,
+            true,
+            null,
+            pageable.toPageRequest()
+        );
         
         return new PortalPageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
     
     @GET
@@ -91,12 +91,12 @@ public class PortalResource {
     @ResourceExtra
     public PortalPull sharedPull(@PathParam("id") long id) {
         
-    	Portal p = portals.select(null, id);
-    	if (!p.isShared()) {
-    		throw new ForbiddenException();
-    	}
-    	
-    	return portals.pull(null, id);
+        Portal p = portals.select(null, id);
+        if (!p.isShared()) {
+            throw new ForbiddenException();
+        }
+        
+        return portals.pull(null, id);
     }
     
     @GET
@@ -104,24 +104,24 @@ public class PortalResource {
     @Transactional
     @RolesAllowed({ "res:///portals:admin" })
     public PortalPageResponse query(
-		@QueryParam("shared") Boolean shared,
-    	@QueryParam("user") Long user,
-		@BeanParam PageableQuery pageable
+        @QueryParam("shared") Boolean shared,
+        @QueryParam("user") Long user,
+        @BeanParam PageableQuery pageable
     ) {
-    	
+        
         Page<Portal> p = portals.query(
-    		scope.get().getId(),
-			shared,
-			user,
-			pageable.toPageRequest()
-		);
+            scope.get().getId(),
+            shared,
+            user,
+            pageable.toPageRequest()
+        );
         
         return new PortalPageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
 
     @POST
@@ -132,7 +132,7 @@ public class PortalResource {
     public Portal create(@Valid PortalCreate create) {
 
         return portals.create(scope.get().getId(), create);
-	}
+    }
     
     @GET
     @Path("/i/{id}")
@@ -150,7 +150,7 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}:admin" })
     public PortalDetails details(@PathParam("id") long id) {
         
-    	return portals.details(scope.get().getId(), id);
+        return portals.details(scope.get().getId(), id);
     }
     
     @GET
@@ -164,69 +164,69 @@ public class PortalResource {
         return portals.pull(scope.get().getId(), id);
     }
 
-	@PUT
-	@Path("/i/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@RolesAllowed({ "res:///portals/i/{id}:admin" })
-	public Portal update(@PathParam("id") long id, @Valid PortalUpdate update) {
-	    
-	    return portals.update(scope.get().getId(), id, update);
-	}
-	
-	@PUT
-	@Path("/i/{id}/share")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@RolesAllowed({ "res:///portals:admin" })
-	public Portal share(@PathParam("id") long id) {
-	    
-	    return portals.share(scope.get().getId(), id, true);
-	}
-	
-	@PUT
-	@Path("/i/{id}/unshare")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@RolesAllowed({ "res:///portals:admin" })
-	public Portal unshare(@PathParam("id") long id) {
-	    
-	    return portals.share(scope.get().getId(), id, false);
-	}
-	
-	@PUT
-	@Path("/i/{id}/push")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@ResourceExtra
-	@RolesAllowed({ "res:///portals/i/{id}:admin" })
-	public PortalPush push(@PathParam("id") long id, PortalPush data) {
-	    
-		return portals.push(scope.get().getId(), id, data);
-	}
-	
-	@DELETE
+    @PUT
+    @Path("/i/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    public Portal update(@PathParam("id") long id, @Valid PortalUpdate update) {
+        
+        return portals.update(scope.get().getId(), id, update);
+    }
+    
+    @PUT
+    @Path("/i/{id}/share")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///portals:admin" })
+    public Portal share(@PathParam("id") long id) {
+        
+        return portals.share(scope.get().getId(), id, true);
+    }
+    
+    @PUT
+    @Path("/i/{id}/unshare")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///portals:admin" })
+    public Portal unshare(@PathParam("id") long id) {
+        
+        return portals.share(scope.get().getId(), id, false);
+    }
+    
+    @PUT
+    @Path("/i/{id}/push")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @ResourceExtra
+    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    public PortalPush push(@PathParam("id") long id, PortalPush data) {
+        
+        return portals.push(scope.get().getId(), id, data);
+    }
+    
+    @DELETE
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })	
+    @RolesAllowed({ "res:///portals/i/{id}:admin" })    
     public Portal remove(@PathParam("id") long id) {
         
-	    return portals.remove(scope.get().getId(), id);
+        return portals.remove(scope.get().getId(), id);
     }
-	
-	@GET
+    
+    @GET
     @Path("/i/{id}/domains")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
     public List<Domain> domains(@PathParam("id") long id) {
         
-		return domains.query(scope.get().getId(), null, id, null).getContent();
+        return domains.query(scope.get().getId(), null, id, null).getContent();
     }
     
     @POST
@@ -236,8 +236,8 @@ public class PortalResource {
     @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
     public Domain domainsCreate(@PathParam("id") long id, @Valid DomainCreate create) {
         
-    	create.portal = id;
-    	
-    	return domains.create(scope.get().getId(), create);
+        create.portal = id;
+        
+        return domains.create(scope.get().getId(), create);
     }
 }

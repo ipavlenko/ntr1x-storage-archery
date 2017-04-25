@@ -48,23 +48,23 @@ public class TemplateMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public TemplatePageResponse query(
-    	@QueryParam("portal") Long portal,
-		@BeanParam PageableQuery pageable
+        @QueryParam("portal") Long portal,
+        @BeanParam PageableQuery pageable
     ) {
-    	
-    	Page<Template> p = templates.query(
-			scope.get().getId(),
-			principal.get().getUser().getId(),
-			portal,
-			pageable.toPageRequest()
-		);
-    	
+        
+        Page<Template> p = templates.query(
+            scope.get().getId(),
+            principal.get().getUser().getId(),
+            portal,
+            pageable.toPageRequest()
+        );
+        
         return new TemplatePageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
 
     @POST
@@ -73,7 +73,7 @@ public class TemplateMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public Template create(@Valid TemplateCreate create) {
-    	
+        
         return templates.create(scope.get().getId(), create);
-	}
+    }
 }

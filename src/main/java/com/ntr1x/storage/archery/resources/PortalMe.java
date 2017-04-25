@@ -53,23 +53,23 @@ public class PortalMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public PortalPageResponse query(
-		@QueryParam("shared") Boolean shared,
-    	@BeanParam PageableQuery pageable
+        @QueryParam("shared") Boolean shared,
+        @BeanParam PageableQuery pageable
     ) {
-    	
-    	Page<Portal> p = portals.query(
-			scope.get().getId(),
-			shared,
-			principal.get().getUser().getId(),
-			pageable.toPageRequest()
-		);
-    	
+        
+        Page<Portal> p = portals.query(
+            scope.get().getId(),
+            shared,
+            principal.get().getUser().getId(),
+            pageable.toPageRequest()
+        );
+        
         return new PortalPageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
 
     @POST
@@ -78,9 +78,9 @@ public class PortalMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public Portal create(@Valid PortalCreate create) {
-    	
-    	create.user = principal.get().getUser().getId();
-    	
+        
+        create.user = principal.get().getUser().getId();
+        
         return portals.create(scope.get().getId(), create);
-	}
+    }
 }

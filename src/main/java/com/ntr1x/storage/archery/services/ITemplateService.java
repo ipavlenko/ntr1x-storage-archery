@@ -16,18 +16,18 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 public interface ITemplateService {
-	
-	Template create(long scope, TemplateCreate create);
-	Template update(Long scope, long id, TemplateUpdate update);
-	
-	Template select(Long scope, long id);
-	Template select(Long scope, long resource, String name);
-	
-	Page<Template> query(Long scope, Long user, Long portal, Pageable pageable);
-	
-	Template remove(Long scope, long id);
-	
-	void createTemplates(Portal portal, RelatedTemplate[] templates);
+    
+    Template create(long scope, TemplateCreate create);
+    Template update(Long scope, long id, TemplateUpdate update);
+    
+    Template select(Long scope, long id);
+    Template select(Long scope, long resource, String name);
+    
+    Page<Template> query(Long scope, Long user, Long portal, Pageable pageable);
+    
+    Template remove(Long scope, long id);
+    
+    void createTemplates(Portal portal, RelatedTemplate[] templates);
     void updateTemplates(Portal portal, RelatedTemplate[] templates);
     
     @XmlRootElement
@@ -35,37 +35,37 @@ public interface ITemplateService {
     @AllArgsConstructor
     public static class TemplatePageResponse {
 
-    	public long count;
+        public long count;
         public int page;
         public int size;
 
         @XmlElement
         public List<Template> content;
-	}
+    }
     
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TemplateCreate {
-    	
-    	public long portal;
-    	public String name;
-    	public String sender;
-    	public String subject;
-    	public String content;
+        
+        public long portal;
+        public String name;
+        public String sender;
+        public String subject;
+        public String content;
     }
     
     @NoArgsConstructor
     @AllArgsConstructor
     public static class TemplateUpdate {
-    	
-    	public long id;
-    	public String name;
-    	public String sender;
-    	public String subject;
-    	public String content;
+        
+        public long id;
+        public String name;
+        public String sender;
+        public String subject;
+        public String content;
     }
     
-	@XmlRootElement
+    @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RelatedTemplate {

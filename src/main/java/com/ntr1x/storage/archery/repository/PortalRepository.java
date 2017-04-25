@@ -10,7 +10,7 @@ import com.ntr1x.storage.archery.model.Portal;
 
 public interface PortalRepository extends JpaRepository<Portal, Long> {
 
-	@Query(
+    @Query(
         " SELECT p"
       + " FROM Portal p"
       + " WHERE (:scope IS NULL OR p.scope = :scope)"
@@ -18,20 +18,20 @@ public interface PortalRepository extends JpaRepository<Portal, Long> {
       + "   AND (:user IS NULL OR p.user.id = :user)"
     )
     Page<Portal> query(
-		@Param("scope") Long scope,
-		@Param("shared") Boolean shared,
-		@Param("user") Long user,
-		Pageable pageable
-	);
-	
-	@Query(
+        @Param("scope") Long scope,
+        @Param("shared") Boolean shared,
+        @Param("user") Long user,
+        Pageable pageable
+    );
+    
+    @Query(
         " SELECT p"
       + " FROM Portal p"
       + " WHERE (:scope IS NULL OR p.scope = :scope)"
       + "   AND p.id = :id"
     )
     Portal select(
-		@Param("scope") Long scope,
-		@Param("id") Long id
-	);
+        @Param("scope") Long scope,
+        @Param("id") Long id
+    );
 }

@@ -36,38 +36,38 @@ import io.swagger.annotations.Api;
 @Component
 @PermitAll
 public class TemplateResource {
-	
-	@Inject
-	private ITemplateService templates;
-	
-	@Inject
-	private Provider<IUserScope> scope;
-	
-	@GET
+    
+    @Inject
+    private ITemplateService templates;
+    
+    @Inject
+    private Provider<IUserScope> scope;
+    
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public TemplatePageResponse list(
-		@QueryParam("portal") Long portal,
-		@QueryParam("user") Long user,
-		@BeanParam PageableQuery pageable
+        @QueryParam("portal") Long portal,
+        @QueryParam("user") Long user,
+        @BeanParam PageableQuery pageable
     ) {
-    	
+        
         Page<Template> p = templates.query(
-    		scope.get().getId(),
-    		user,
-    		portal,
-			pageable.toPageRequest()
-		);
+            scope.get().getId(),
+            user,
+            portal,
+            pageable.toPageRequest()
+        );
         
         return new TemplatePageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
-	
-	@POST
+    
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
@@ -75,20 +75,20 @@ public class TemplateResource {
     public Template create(@Valid TemplateCreate create) {
 
         return templates.create(scope.get().getId(), create);
-	}
-	
-	@PUT
-	@Path("/i/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@RolesAllowed({ "res:///templates/i/{id}:admin" })
-	public Template update(@PathParam("id") long id, @Valid TemplateUpdate update) {
-	    
-	    return templates.update(scope.get().getId(), id, update);
-	}
-	
-	@GET
+    }
+    
+    @PUT
+    @Path("/i/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///templates/i/{id}:admin" })
+    public Template update(@PathParam("id") long id, @Valid TemplateUpdate update) {
+        
+        return templates.update(scope.get().getId(), id, update);
+    }
+    
+    @GET
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
@@ -97,14 +97,14 @@ public class TemplateResource {
         
         return templates.select(scope.get().getId(), id);
     }
-	
-	@DELETE
+    
+    @DELETE
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///templates/i/{id}:admin" })
     public Template remove(@PathParam("id") long id) {
         
-	    return templates.remove(scope.get().getId(), id);
+        return templates.remove(scope.get().getId(), id);
     }
 }

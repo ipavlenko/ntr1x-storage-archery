@@ -48,23 +48,23 @@ public class DomainMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public DomainPageResponse query(
-    	@QueryParam("portal") Long portal,
-		@BeanParam PageableQuery pageable
+        @QueryParam("portal") Long portal,
+        @BeanParam PageableQuery pageable
     ) {
-    	
-    	Page<Domain> p = domains.query(
-			scope.get().getId(),
-			principal.get().getUser().getId(),
-			portal,
-			pageable.toPageRequest()
-		);
-    	
+        
+        Page<Domain> p = domains.query(
+            scope.get().getId(),
+            principal.get().getUser().getId(),
+            portal,
+            pageable.toPageRequest()
+        );
+        
         return new DomainPageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
 
     @POST
@@ -73,7 +73,7 @@ public class DomainMe {
     @Transactional
     @RolesAllowed({ "auth" })
     public Domain create(@Valid DomainCreate create) {
-    	
+        
         return domains.create(scope.get().getId(), create);
-	}
+    }
 }

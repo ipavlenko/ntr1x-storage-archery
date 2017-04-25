@@ -25,43 +25,43 @@ import io.swagger.annotations.Api;
 @Path("/archery/context")
 @PermitAll
 public class ContextResource {
-	
-	@Inject
+    
+    @Inject
     private IPortalService portals;
     
     @Inject
     private Provider<IUserPrincipal> principal;
-	
+    
     @Inject
     private Provider<IUserScope> scope;
     
-	@GET
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public PortalContext context() {
-    	
-		// Portal produces scope
+        
+        // Portal produces scope
         PortalPull pull = portals.pull(null, scope.get().getId());
-    	
+        
         return new PortalContext(
-    		principal.get().getUser(),
-			pull.portal,
-			pull.content
-		);
+            principal.get().getUser(),
+            pull.portal,
+            pull.content
+        );
     }
-	
-	@GET
+    
+    @GET
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public PortalContext context(@PathParam("id") long id) {
         
-    	PortalPull pull = portals.pull(null, id);
+        PortalPull pull = portals.pull(null, id);
         
         return new PortalContext(
-    		principal.get().getUser(),
-			pull.portal,
-			pull.content
-		);
+            principal.get().getUser(),
+            pull.portal,
+            pull.content
+        );
     }
 }

@@ -18,90 +18,90 @@ import com.ntr1x.storage.security.services.ISecurityService;
 @Service
 public class DomainService implements IDomainService {
 
-	@Inject
-	private EntityManager em;
+    @Inject
+    private EntityManager em;
 
-	@Inject
-	private ISecurityService security;
-	
-	@Inject
-	private DomainRepository domains;
-	
-	@Override
-	public Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable) {
-		
-		return domains.query(scope, user, portal, pageable);
-	}
-	
-	@Override
-	public Domain select(Long scope, long id) {
-		
-		return domains.select(scope, id);
-	}
-	
-	@Override
-	public Domain select(Long scope, String name) {
-		
-		return domains.select(scope, name);
-	}
-	
-	@Override
-	public Domain remove(Long scope, long id) {
-		
-		Domain d = domains.select(scope, id); {
-			
-			em.remove(d);
-			em.flush();
-		}
-		
-		return d;
-	}
-	
-	@Override
-	public Domain create(long scope, DomainCreate create) {
-		
-		Domain d = new Domain(); {
-			
-			Portal portal = em.find(Portal.class, create.portal);
-			
-			d.setScope(scope);
-			d.setName(create.name);
-			d.setPortal(portal);
-			
-			em.persist(d);
-			em.flush();
-			
-			security.register(d, ResourceUtils.alias(null, "domains/i", d));
-			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
-		}
-		
-		return d;
-	}
+    @Inject
+    private ISecurityService security;
+    
+    @Inject
+    private DomainRepository domains;
+    
+    @Override
+    public Page<Domain> query(Long scope, Long user, Long portal, Pageable pageable) {
+        
+        return domains.query(scope, user, portal, pageable);
+    }
+    
+    @Override
+    public Domain select(Long scope, long id) {
+        
+        return domains.select(scope, id);
+    }
+    
+    @Override
+    public Domain select(Long scope, String name) {
+        
+        return domains.select(scope, name);
+    }
+    
+    @Override
+    public Domain remove(Long scope, long id) {
+        
+        Domain d = domains.select(scope, id); {
+            
+            em.remove(d);
+            em.flush();
+        }
+        
+        return d;
+    }
+    
+    @Override
+    public Domain create(long scope, DomainCreate create) {
+        
+        Domain d = new Domain(); {
+            
+            Portal portal = em.find(Portal.class, create.portal);
+            
+            d.setScope(scope);
+            d.setName(create.name);
+            d.setPortal(portal);
+            
+            em.persist(d);
+            em.flush();
+            
+            security.register(d, ResourceUtils.alias(null, "domains/i", d));
+            security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
+        }
+        
+        return d;
+    }
 
-	@Override
-	public Domain update(Long scope, long id, DomainUpdate update) {
-		
-		Domain d = domains.select(scope, id); {
-			
-			d.setName(update.name);
-			
-			em.merge(d);
-			em.flush();
-		}
-		
-		return d;
-	}
-	
-	@Override
-	public void createDomains(Portal portal, RelatedDomain[] domains) {
-		
-		if (domains != null) {
+    @Override
+    public Domain update(Long scope, long id, DomainUpdate update) {
+        
+        Domain d = domains.select(scope, id); {
+            
+            d.setName(update.name);
+            
+            em.merge(d);
+            em.flush();
+        }
+        
+        return d;
+    }
+    
+    @Override
+    public void createDomains(Portal portal, RelatedDomain[] domains) {
+        
+        if (domains != null) {
             
             for (RelatedDomain p : domains) {
                 
                 Domain d = new Domain(); {
                     
-                	d.setPortal(portal);
+                    d.setPortal(portal);
                     d.setScope(portal.getScope());
                     d.setName(p.name.replaceAll(Pattern.quote("#"), "" + portal.getId()));
                     
@@ -109,18 +109,18 @@ public class DomainService implements IDomainService {
                     em.flush();
                     
                     security.register(d, ResourceUtils.alias(null, "domains/i", d));
-        			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
+                    security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
                 }
             }
             
             em.flush();
         }
-	}
-	
-	@Override
-	public void updateDomains(Portal portal, RelatedDomain[] domains) {
-		
-		if (domains != null) {
+    }
+    
+    @Override
+    public void updateDomains(Portal portal, RelatedDomain[] domains) {
+        
+        if (domains != null) {
             
             for (RelatedDomain p : domains) {
                 
@@ -128,7 +128,7 @@ public class DomainService implements IDomainService {
                 
                     case CREATE: {
                         
-                    	Domain d = new Domain(); {
+                        Domain d = new Domain(); {
                             
                             d.setScope(portal.getScope());
                             d.setPortal(portal);
@@ -138,9 +138,9 @@ public class DomainService implements IDomainService {
                             em.flush();
                             
                             security.register(d, ResourceUtils.alias(null, "domains/i", d));
-                			security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
+                            security.grant(portal.getScope(), portal.getUser(), d.getAlias(), "admin");
                         }
-                    	
+                        
                         break;
                     }
                     case UPDATE: {
@@ -156,13 +156,13 @@ public class DomainService implements IDomainService {
                     }
                     case REMOVE: {
                         
-                    	Domain d = select(portal.getScope(), p.id); {
+                        Domain d = select(portal.getScope(), p.id); {
                             
                             d.setName(p.name);
                             
                             em.remove(d);
                         }
-                    	
+                        
                         break;
                     }
                 default:
@@ -172,5 +172,5 @@ public class DomainService implements IDomainService {
             
             em.flush();
         }
-	}
+    }
 }

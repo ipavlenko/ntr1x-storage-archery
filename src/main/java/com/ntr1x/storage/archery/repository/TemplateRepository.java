@@ -9,42 +9,42 @@ import org.springframework.data.repository.query.Param;
 import com.ntr1x.storage.archery.model.Template;
 
 public interface TemplateRepository extends JpaRepository<Template, Long> {
-	
-	@Query(
+    
+    @Query(
         " SELECT t"
       + " FROM Template t"
       + " WHERE (:scope IS NULL OR t.scope = :scope)"
-      + "	AND (:user IS NULL OR t.portal.user.id = :user)"
-      + "	AND (t.portal.id = :portal)"
+      + "    AND (:user IS NULL OR t.portal.user.id = :user)"
+      + "    AND (t.portal.id = :portal)"
     )
     Page<Template> query(
-		@Param("scope") Long scope,
-		@Param("user") Long user,
-		@Param("portal") long portal,
-		Pageable pageable
-	);
-	
-	@Query(
+        @Param("scope") Long scope,
+        @Param("user") Long user,
+        @Param("portal") long portal,
+        Pageable pageable
+    );
+    
+    @Query(
         " SELECT t"
       + " FROM Template t"
       + " WHERE (:scope IS NULL OR t.scope = :scope)"
-      + "	AND (t.id = :id)"
+      + "    AND (t.id = :id)"
     )
     Template select(
-		@Param("scope") Long scope,
-		@Param("id") long id
-	);
-	
-	@Query(
+        @Param("scope") Long scope,
+        @Param("id") long id
+    );
+    
+    @Query(
         " SELECT t"
       + " FROM Template t"
       + " WHERE (:scope IS NULL OR t.scope = :scope)"
-      + "	AND (t.portal.id = :portal)"
-      + "	AND (t.name = :name)"
+      + "    AND (t.portal.id = :portal)"
+      + "    AND (t.name = :name)"
     )
     Template select(
-		@Param("scope") Long scope,
-		@Param("portal") long portal,
-		@Param("name") String name
-	);
+        @Param("scope") Long scope,
+        @Param("portal") long portal,
+        @Param("name") String name
+    );
 }

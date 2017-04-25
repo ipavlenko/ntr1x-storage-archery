@@ -24,16 +24,16 @@ import lombok.NoArgsConstructor;
 
 public interface IPortalService {
 
-	Portal create(long scope, PortalCreate create);
-	Portal update(Long scope, long id, PortalUpdate update);
-	Portal share(Long scope, long id, boolean share);
-	Portal remove(Long scope, long id);
+    Portal create(long scope, PortalCreate create);
+    Portal update(Long scope, long id, PortalUpdate update);
+    Portal share(Long scope, long id, boolean share);
+    Portal remove(Long scope, long id);
 
     Page<Portal> query(Long scope, Boolean shared, Long user, Pageable pageable);
     
     Portal select(Long scope, long id);
     PortalDetails details(Long scope, long id);
-	Properties properties(Long scope, long id, String type);
+    Properties properties(Long scope, long id, String type);
 
     PortalPull pull(Long scope, long id);
     PortalPush push(Long scope, long id, PortalPush content);
@@ -43,22 +43,22 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalPageResponse {
 
-    	public long count;
+        public long count;
         public int page;
         public int size;
 
         @XmlElement
         public List<Portal> content;
-	}
+    }
     
     @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PortalPush {
         
-		@XmlElement
-		@ApiModelProperty(dataType = "Object")
-    	public JsonNode content;
+        @XmlElement
+        @ApiModelProperty(dataType = "Object")
+        public JsonNode content;
     }
     
     @XmlRootElement
@@ -66,15 +66,15 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalContext {
         
-    	@XmlElement
-		public User user;
-    	
-    	@XmlElement
-		public Portal portal;
-    	
-		@XmlElement
-		@ApiModelProperty(dataType = "Object")
-    	public JsonNode content;
+        @XmlElement
+        public User user;
+        
+        @XmlElement
+        public Portal portal;
+        
+        @XmlElement
+        @ApiModelProperty(dataType = "Object")
+        public JsonNode content;
     }
     
     @XmlRootElement
@@ -105,12 +105,12 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalPull {
         
-    	@XmlElement
-		public Portal portal;
-    	
-		@XmlElement
-		@ApiModelProperty(dataType = "Object")
-    	public JsonNode content;
+        @XmlElement
+        public Portal portal;
+        
+        @XmlElement
+        @ApiModelProperty(dataType = "Object")
+        public JsonNode content;
     }
     
     @XmlRootElement
@@ -118,10 +118,10 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalCreate {
         
-    	@NotBlank
-    	public String title;
-    	
-    	public Long proto;
+        @NotBlank
+        public String title;
+        
+        public Long proto;
         public long user;
         public Long thumbnail;
         
@@ -129,10 +129,10 @@ public interface IPortalService {
         public IDomainService.RelatedDomain[] domains;
         
         @XmlElement
-    	public IParamService.RelatedParam[] params;
-    	
-    	@XmlElement
-    	public ITemplateService.RelatedTemplate[] templates;
+        public IParamService.RelatedParam[] params;
+        
+        @XmlElement
+        public ITemplateService.RelatedTemplate[] templates;
     }
     
     @XmlRootElement
@@ -140,28 +140,28 @@ public interface IPortalService {
     @AllArgsConstructor
     public static class PortalUpdate {
         
-    	@NotBlank
-    	public String title;
-    	
-    	public Long thumbnail;
-    	public Boolean shared;
-    	
-    	@XmlElement
+        @NotBlank
+        public String title;
+        
+        public Long thumbnail;
+        public Boolean shared;
+        
+        @XmlElement
         public IDomainService.RelatedDomain[] domains;
-    	
-    	@XmlElement
-    	public IParamService.RelatedParam[] params;
-    	
-    	@XmlElement
-    	public ITemplateService.RelatedTemplate[] templates;
+        
+        @XmlElement
+        public IParamService.RelatedParam[] params;
+        
+        @XmlElement
+        public ITemplateService.RelatedTemplate[] templates;
     }
     
     @XmlRootElement
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PortalRootAccount {
-    	
-    	public String name;
+        
+        public String name;
         public String email;
         public String password;
     }

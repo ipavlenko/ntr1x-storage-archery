@@ -23,17 +23,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(
-	name = "domains"
+    name = "domains"
 )
 @PrimaryKeyJoinColumn(name = "ResourceId", referencedColumnName = "Id")
 @CascadeOnDelete
 public class Domain extends Resource {
 
-	@XmlElement
+    @XmlElement
     @ManyToOne
     @JoinColumn(name = "PortalId", nullable = false, updatable = false)
     private Portal portal;
-	
-	@Column(name = "Name", nullable = false, unique = true)
-	private String name;
+    
+    @Column(name = "Name", nullable = false, unique = true)
+    private String name;
 }

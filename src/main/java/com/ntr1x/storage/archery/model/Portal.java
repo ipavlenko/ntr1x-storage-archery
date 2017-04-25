@@ -28,38 +28,38 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(
-	name = "portals"
+    name = "portals"
 )
 @PrimaryKeyJoinColumn(name = "ResourceId", referencedColumnName = "Id")
 @CascadeOnDelete
 public class Portal extends Resource {
 
-	public enum ParamType {
-		META,
-		MAIL,
-		ROUTE
-	}
+    public enum ParamType {
+        META,
+        MAIL,
+        ROUTE
+    }
 
-	@Column(name = "Title", nullable = false)
-	private String title;
-	
-	@Column(name = "Shared")
-	private boolean shared;
-	
-	@Lob
-	@ResourceExtra
-	@Column(name = "Content", nullable = true)
-	@ApiModelProperty(hidden = true)
-	private String content;
-	
-	@XmlElement
-	@JsonManagedReference
-	@ManyToOne
-	@JoinColumn(name = "UserId", nullable = false, updatable = false)
-	private User user;
-	
-	@XmlElement
+    @Column(name = "Title", nullable = false)
+    private String title;
+    
+    @Column(name = "Shared")
+    private boolean shared;
+    
+    @Lob
+    @ResourceExtra
+    @Column(name = "Content", nullable = true)
+    @ApiModelProperty(hidden = true)
+    private String content;
+    
+    @XmlElement
+    @JsonManagedReference
     @ManyToOne
-	@JoinColumn(name = "ThumbnailId", nullable = true, updatable = true)
-	private Image thumbnail;
+    @JoinColumn(name = "UserId", nullable = false, updatable = false)
+    private User user;
+    
+    @XmlElement
+    @ManyToOne
+    @JoinColumn(name = "ThumbnailId", nullable = true, updatable = true)
+    private Image thumbnail;
 }

@@ -36,38 +36,38 @@ import io.swagger.annotations.Api;
 @Path("/archery/domains")
 @PermitAll
 public class DomainResource {
-	
-	@Inject
-	private IDomainService domains;
-	
-	@Inject
-	private Provider<IUserScope> scope;
-	
-	@GET
+    
+    @Inject
+    private IDomainService domains;
+    
+    @Inject
+    private Provider<IUserScope> scope;
+    
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     public DomainPageResponse shared(
-		@QueryParam("portal") Long portal,
-		@QueryParam("user") Long user,
-		@BeanParam PageableQuery pageable
+        @QueryParam("portal") Long portal,
+        @QueryParam("user") Long user,
+        @BeanParam PageableQuery pageable
     ) {
-    	
+        
         Page<Domain> p = domains.query(
-    		scope.get().getId(),
-			user,
-			portal,
-			pageable.toPageRequest()
-		);
+            scope.get().getId(),
+            user,
+            portal,
+            pageable.toPageRequest()
+        );
         
         return new DomainPageResponse(
-    		p.getTotalElements(),
-    		p.getNumber(),
-    		p.getSize(),
-    		p.getContent()
-		);
+            p.getTotalElements(),
+            p.getNumber(),
+            p.getSize(),
+            p.getContent()
+        );
     }
-	
-	@POST
+    
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
@@ -75,20 +75,20 @@ public class DomainResource {
     public Domain create(@Valid DomainCreate create) {
 
         return domains.create(scope.get().getId(), create);
-	}
-	
-	@PUT
-	@Path("/i/{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Transactional
-	@RolesAllowed({ "res:///domains/i/{id}:admin" })
-	public Domain update(@PathParam("id") long id, @Valid DomainUpdate update) {
-	    
-	    return domains.update(scope.get().getId(), id, update);
-	}
-	
-	@GET
+    }
+    
+    @PUT
+    @Path("/i/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    @RolesAllowed({ "res:///domains/i/{id}:admin" })
+    public Domain update(@PathParam("id") long id, @Valid DomainUpdate update) {
+        
+        return domains.update(scope.get().getId(), id, update);
+    }
+    
+    @GET
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
@@ -97,14 +97,14 @@ public class DomainResource {
         
         return domains.select(scope.get().getId(), id);
     }
-	
-	@DELETE
+    
+    @DELETE
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @RolesAllowed({ "res:///domains/i/{id}:admin" })
     public Domain remove(@PathParam("id") long id) {
         
-	    return domains.remove(scope.get().getId(), id);
+        return domains.remove(scope.get().getId(), id);
     }
 }
