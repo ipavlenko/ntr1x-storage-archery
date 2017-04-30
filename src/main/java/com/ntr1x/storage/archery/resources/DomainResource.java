@@ -71,7 +71,7 @@ public class DomainResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///domains:admin" })
+    @RolesAllowed({ "res:///domains/:admin" })
     public Domain create(@Valid DomainCreate create) {
 
         return domains.create(scope.get().getId(), create);
@@ -82,7 +82,7 @@ public class DomainResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///domains/i/{id}:admin" })
+    @RolesAllowed({ "res:///domains/i/{id}/:admin" })
     public Domain update(@PathParam("id") long id, @Valid DomainUpdate update) {
         
         return domains.update(scope.get().getId(), id, update);
@@ -92,7 +92,7 @@ public class DomainResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///domains/i/{id}:admin" })
+    @RolesAllowed({ "res:///domains/i/{id}/:admin" })
     public Domain select(@PathParam("id") long id) {
         
         return domains.select(scope.get().getId(), id);
@@ -102,7 +102,7 @@ public class DomainResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///domains/i/{id}:admin" })
+    @RolesAllowed({ "res:///domains/i/{id}/:admin" })
     public Domain remove(@PathParam("id") long id) {
         
         return domains.remove(scope.get().getId(), id);

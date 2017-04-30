@@ -102,7 +102,7 @@ public class PortalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals:admin" })
+    @RolesAllowed({ "res:///portals/:admin" })
     public PortalPageResponse query(
         @QueryParam("shared") Boolean shared,
         @QueryParam("user") Long user,
@@ -128,7 +128,7 @@ public class PortalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals:admin" })
+    @RolesAllowed({ "res:///portals/:admin" })
     public Portal create(@Valid PortalCreate create) {
 
         return portals.create(scope.get().getId(), create);
@@ -147,7 +147,7 @@ public class PortalResource {
     @Path("/i/{id}/details")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/:admin" })
     public PortalDetails details(@PathParam("id") long id) {
         
         return portals.details(scope.get().getId(), id);
@@ -157,7 +157,7 @@ public class PortalResource {
     @Path("/i/{id}/pull")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/:admin" })
     @ResourceExtra
     public PortalPull pull(@PathParam("id") long id) {
         
@@ -169,7 +169,7 @@ public class PortalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/:admin" })
     public Portal update(@PathParam("id") long id, @Valid PortalUpdate update) {
         
         return portals.update(scope.get().getId(), id, update);
@@ -180,7 +180,7 @@ public class PortalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals:admin" })
+    @RolesAllowed({ "res:///portals/:admin" })
     public Portal share(@PathParam("id") long id) {
         
         return portals.share(scope.get().getId(), id, true);
@@ -191,7 +191,7 @@ public class PortalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals:admin" })
+    @RolesAllowed({ "res:///portals/:admin" })
     public Portal unshare(@PathParam("id") long id) {
         
         return portals.share(scope.get().getId(), id, false);
@@ -203,7 +203,7 @@ public class PortalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
     @ResourceExtra
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/:admin" })
     public PortalPush push(@PathParam("id") long id, PortalPush data) {
         
         return portals.push(scope.get().getId(), id, data);
@@ -213,7 +213,7 @@ public class PortalResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}:admin" })    
+    @RolesAllowed({ "res:///portals/i/{id}/:admin" })    
     public Portal remove(@PathParam("id") long id) {
         
         return portals.remove(scope.get().getId(), id);
@@ -223,7 +223,7 @@ public class PortalResource {
     @Path("/i/{id}/domains")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/domains/:admin" })
     public List<Domain> domains(@PathParam("id") long id) {
         
         return domains.query(scope.get().getId(), null, id, null).getContent();
@@ -233,7 +233,7 @@ public class PortalResource {
     @Path("/i/{id}/domains")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///portals/i/{id}/domains:admin" })
+    @RolesAllowed({ "res:///portals/i/{id}/domains/:admin" })
     public Domain domainsCreate(@PathParam("id") long id, @Valid DomainCreate create) {
         
         create.portal = id;

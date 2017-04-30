@@ -133,6 +133,9 @@ public interface IPortalService {
         
         @XmlElement
         public ITemplateService.RelatedTemplate[] templates;
+
+        @XmlElement
+        public IStoreService.RelatedStore[] stores;
     }
     
     @XmlRootElement
@@ -154,6 +157,9 @@ public interface IPortalService {
         
         @XmlElement
         public ITemplateService.RelatedTemplate[] templates;
+        
+        @XmlElement
+        public IStoreService.RelatedStore[] stores;
     }
     
     @XmlRootElement

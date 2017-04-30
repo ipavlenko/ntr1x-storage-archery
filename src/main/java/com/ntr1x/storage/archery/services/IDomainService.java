@@ -62,9 +62,10 @@ public interface IDomainService {
     @AllArgsConstructor
     public static class DomainCreate {
         
+        public long portal;
+        
         @NotBlank
         public String name;
-        public long portal;
     }
     
     @XmlRootElement

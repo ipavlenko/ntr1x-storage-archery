@@ -56,6 +56,9 @@ public class PortalService implements IPortalService {
     private ITemplateService templates;
     
     @Inject
+    private IStoreService stores;
+    
+    @Inject
     private ObjectMapper mapper;
     
     @Inject
@@ -118,10 +121,9 @@ public class PortalService implements IPortalService {
             security.grant(p.getId(), user, "/", "admin");
             
             domains.createDomains(p, create.domains);
-            
             params.createParams(p, create.params);
-            
             templates.createTemplates(p, create.templates);
+            stores.createStores(p, create.stores);
         }
         
         return p;
@@ -143,10 +145,9 @@ public class PortalService implements IPortalService {
             em.flush();
             
             domains.updateDomains(p, update.domains);
-            
             params.updateParams(p, update.params);
-            
             templates.updateTemplates(p, update.templates);
+            stores.updateStores(p, update.stores);
         }
         
         return p;

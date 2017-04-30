@@ -71,7 +71,7 @@ public class TemplateResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///templates:admin" })
+    @RolesAllowed({ "res:///templates/:admin" })
     public Template create(@Valid TemplateCreate create) {
 
         return templates.create(scope.get().getId(), create);
@@ -82,7 +82,7 @@ public class TemplateResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///templates/i/{id}:admin" })
+    @RolesAllowed({ "res:///templates/i/{id}/:admin" })
     public Template update(@PathParam("id") long id, @Valid TemplateUpdate update) {
         
         return templates.update(scope.get().getId(), id, update);
@@ -92,7 +92,7 @@ public class TemplateResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///templates/i/{id}:admin" })
+    @RolesAllowed({ "res:///templates/i/{id}/:admin" })
     public Template select(@PathParam("id") long id) {
         
         return templates.select(scope.get().getId(), id);
@@ -102,7 +102,7 @@ public class TemplateResource {
     @Path("/i/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    @RolesAllowed({ "res:///templates/i/{id}:admin" })
+    @RolesAllowed({ "res:///templates/i/{id}/:admin" })
     public Template remove(@PathParam("id") long id) {
         
         return templates.remove(scope.get().getId(), id);

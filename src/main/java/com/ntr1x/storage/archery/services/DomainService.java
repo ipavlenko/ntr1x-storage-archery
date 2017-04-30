@@ -65,7 +65,7 @@ public class DomainService implements IDomainService {
             Portal portal = em.find(Portal.class, create.portal);
             
             d.setScope(scope);
-            d.setName(create.name);
+            d.setName(create.name.replaceAll(Pattern.quote("#"), "" + portal.getId()));
             d.setPortal(portal);
             
             em.persist(d);
@@ -83,7 +83,9 @@ public class DomainService implements IDomainService {
         
         Domain d = domains.select(scope, id); {
             
-            d.setName(update.name);
+            Portal portal = d.getPortal();
+            
+            d.setName(update.name.replaceAll(Pattern.quote("#"), "" + portal.getId()));
             
             em.merge(d);
             em.flush();
@@ -132,7 +134,7 @@ public class DomainService implements IDomainService {
                             
                             d.setScope(portal.getScope());
                             d.setPortal(portal);
-                            d.setName(p.name);
+                            d.setName(p.name.replaceAll(Pattern.quote("#"), "" + portal.getId()));
                             
                             em.persist(d);
                             em.flush();
