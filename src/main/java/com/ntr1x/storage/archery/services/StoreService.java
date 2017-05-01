@@ -1,8 +1,5 @@
 package com.ntr1x.storage.archery.services;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.ntr1x.storage.archery.model.Portal;
 import com.ntr1x.storage.archery.model.Store;
 import com.ntr1x.storage.archery.repository.StoreRepository;
-import com.ntr1x.storage.core.model.Param;
 import com.ntr1x.storage.core.reflection.ResourceUtils;
 import com.ntr1x.storage.core.services.IParamService;
 import com.ntr1x.storage.security.services.ISecurityService;
@@ -102,18 +98,6 @@ public class StoreService implements IStoreService {
     public Page<Store> query(Long scope, Long user, Long portal, Pageable pageable) {
         
         return stores.query(scope, user, portal, pageable);
-    }
-
-    @Override
-    public Map<String, String> params(Store store, Store.ParamType type) {
-        
-        Map<String, String> map = new HashMap<>();
-        for (Param param : params.list(store.getScope(), store.getId(), type.name())) {
-            
-            map.put(param.getName(), param.getValue());
-        }
-        
-        return map;
     }
     
     @Override

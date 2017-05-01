@@ -29,10 +29,18 @@ public interface IStoreService {
     
     Page<Store> query(Long scope, Long user, Long portal, Pageable pageable);
     
-    Map<String, String> params(Store store, Store.ParamType type);
-    
     void createStores(Portal portal, RelatedStore[] stores);
     void updateStores(Portal portal, RelatedStore[] stores);
+    
+    @XmlRootElement
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class StoreContext {
+        
+        public Store store;
+        
+        public Map<String, String> params;
+    }
     
     @XmlRootElement
     @NoArgsConstructor

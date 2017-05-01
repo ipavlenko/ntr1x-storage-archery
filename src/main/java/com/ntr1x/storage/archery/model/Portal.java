@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 
@@ -47,6 +48,7 @@ public class Portal extends Resource {
     private boolean shared;
     
     @Lob
+    @XmlTransient
     @ResourceExtra
     @Column(name = "Content", nullable = true)
     @ApiModelProperty(hidden = true)
